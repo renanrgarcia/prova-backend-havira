@@ -71,6 +71,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 - Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais (Point (X, Y) { SRID = 4326 }).
 - Criar interfaces de repositório para cada entidade `IRepository`, como base, e `ILocalizacao`.
 - Adicionar o pacote FluentValidation para validação de entidades. Criar as classes de validação para as entidades.
+- Criar a interface e implemente as classes de notificação do Sistema ("Event Source").
 
 #### b. **Havira.Data**
 
@@ -90,3 +91,22 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - `ViewModels`: Representa os modelos de dados que serão expostos para a camada API.
   - `Mapper`: Responsável por mapear as entidades de domínio (Models) para ViewModels e vice-versa.
     - AutoMapper: biblioteca .NET para mapear automaticamente objetos de um tipo para outro. Ex: ViewModels <> Models
+  - `App`: Contém a lógica de aplicação, incluindo serviços que orquestram as operações de negócio e interagem com outras camadas.
+- Primeiro, definir a Interface para a camada App (`ILocalizacaoApplication`).
+  - `IBaseApplication` contém o molde para criação com serviços base. Porém, cada interface contém seus contratos próprios.
+- Criar as ViewModels necessárias aos contratos definidos nas Interfaces (`LocalizacaoViewModel`).
+- Criar a classe AutoMapper.
+  - Instalar o pacote `DependencyInjection` para integrar o AutoMapper com o sistema de injeção de dependência.
+  - Implementar os mapeamentos dos modelos de domínio (Models) para ViewModels e vice-versa.
+- Criar as classes da camada App com os serviços.
+  - Adicionar o pacote FluentValidation (validação de modelos) ao projeto.
+  - Criar a classe abstrata `BaseApplication`, as demais classes de `App` devem herdar dela, além de implementar as suas interfaces.
+    - Em `BaseApplication` é padronizado o método de validação e processamento de mensagens de erro.
+  - Criar as demais classes da camada App com os serviços (`LocalizacaoApplication`).
+
+#### d. **Havira.Infra.Ioc**
+
+- Registre todos os serviços e repositórios para gerenciar a injeção de dependências no `Startup` da API.
+- Crie o container de injeção de dependência: `DependencyInjectionConfig.cs`.
+- Adicione os pacotes `Microsoft.AspNetCore.Identity.EntityFrameworkCore` e `Microsoft.EntityFrameworkCore` ao projeto.
+- Registre o container de injeção de dependência em `ApiConfig.cs` -> services.ResolveDependencies(configuration).

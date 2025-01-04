@@ -1,7 +1,7 @@
-using System.Drawing;
 using Havira.Business.Models.ContextoLocalizacao.Enums;
+using NetTopologySuite.Geometries;
 
-namespace Havira.Application.ViewModel.ContextoTrabalho.TrabalhoViewModel;
+namespace Havira.Application.ViewModel.ContextoLocalizacao;
 
 public class LocalizacaoViewModel
 {

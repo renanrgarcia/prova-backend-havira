@@ -1,5 +1,5 @@
 using Havira.Business.Models.ContextoLocalizacao.Enums;
-using Havira.Application.ViewModel.ContextoTrabalho.TrabalhoViewModel;
+using Havira.Application.ViewModel.ContextoLocalizacao;
 
 namespace Havira.Application.Interfaces.ContextoLocalizacao
 {

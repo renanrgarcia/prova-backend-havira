@@ -1,11 +1,11 @@
 using FluentValidation;
 using Havira.Business.Models.ContextoLocalizacao;
 
-namespace Havira.Business.Models.ContextoTrabalho.Validations
+namespace Havira.Business.Models.ContextoLocalizacao.Validations
 {
-    public class SubmeterTrabalhoValidation : AbstractValidator<Localizacao>
+    public class LocalizacaoValidation : AbstractValidator<Localizacao>
     {
-        public SubmeterTrabalhoValidation()
+        public LocalizacaoValidation()
         {
             RuleFor(x => x.Nome)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório.")

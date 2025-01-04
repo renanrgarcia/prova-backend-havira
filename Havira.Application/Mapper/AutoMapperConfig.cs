@@ -1,5 +1,5 @@
 using AutoMapper;
-using Havira.Application.ViewModel.ContextoTrabalho.TrabalhoViewModel;
+using Havira.Application.ViewModel.ContextoLocalizacao.LocalizacaoViewModel;
 using Havira.Business.Models.ContextoLocalizacao;
 
 namespace Havira.Application.Mapper
