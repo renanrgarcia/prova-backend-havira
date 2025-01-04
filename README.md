@@ -70,4 +70,13 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 - Definir as entidades principais `Localizacao` e `Categoria`.
 - Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais (Point (X, Y) { SRID = 4326 }).
 - Criar interfaces de repositório para cada entidade `IRepository`, como base, e `ILocalizacao`.
-- Implemente a interface IUser para definições de Authentication e Authorization.
+
+#### b. **Havira.Data**
+
+- Configurar o DbContext para gerenciar as operações de banco de dados.
+  - Adicionar o pacote NuGet `EntityFrameworkCore` como ORM.
+  - Adicionar o pacote NuGet `EntityFrameworkCore.PostgreSQL` para trabalhar com o PostgreSQL.
+  - Criar a classe `MeuDbContext`: classe principal do EF Core que coordena sua funcionalidade para um modelo de dados.
+- Implementar as interfaces de repositório utilizando o Entity Framework.
+  - Criar o repositório base `Repository`, implementando `IRepository` (Que contem o contrato das operações de CRUD).
+  - Criar repositório para a entidade `Localizacao`. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
