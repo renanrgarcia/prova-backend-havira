@@ -20,6 +20,5 @@ namespace Havira.Business.Models
         {
             UpdatedAt = DateTime.UtcNow.AddHours(-3);
         }
-
     }
 }

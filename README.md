@@ -47,15 +47,15 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 
 ### 1. Criação dos Projetos da API
 
-- Crie uma nova solução no Visual Studio ou usando o CLI do .NET (`dotnet new sln -n Havira.Api.Congresso`).
-- Adicione os projetos com as seguintes estruturas:
+- Criar uma nova solução no Visual Studio ou usando o CLI do .NET (`dotnet new sln -n Havira.Api.Congresso`).
+- Adicionar os projetos com as seguintes estruturas:
   - **Havira.API**: Projeto de API ASP.NET Core (`dotnet new webapi -n Havira.API`).
   - **Havira.Application**, **Havira.Business**, **Havira.Data**, **Havira.Infra.Ioc**: Projetos de Class Library (Ex: `dotnet new classlib -n Havira.Application`).
-- Adicione os projetos na solução (Ex: `dotnet sln add App.API/App.API.csproj`)
+- Adicionar os projetos na solução (Ex: `dotnet sln add App.API/App.API.csproj`)
 
 ### 2. Configuração das referências
 
-- Adicione as referências necessárias nos projetos:
+- Adicionar as referências necessárias nos projetos:
   - `Havira.API` deve referenciar `Havira.Application`.
   - `Havira.Application` deve referenciar `Havira.Business` e `Havira.Data`.
   - `Havira.Data` deve referenciar `Havira.Business`.
@@ -66,8 +66,8 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 
 #### a. **Havira.Business**
 
-- Criada a entidade base `Entity` e defina as constantes do SchemaDB `SchemaConsts`.
-- Defina as entidades principais (`Localizacao`, `TipoTrabalho`, etc.).
-- Crie interfaces de repositório para cada entidade (`IRepository`) e (`ITrabalhoRepository`, `ITipoTrabalhoRepository`, etc.).
-- Crie a interface e implemente as classes de notificação do Sistema ("Event Source").
+- Criar a entidade base `Entity` e definir as constantes do SchemaDB `SchemaConsts`.
+- Definir as entidades principais `Localizacao` e `Categoria`.
+- Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais (Point (X, Y) { SRID = 4326 }).
+- Criar interfaces de repositório para cada entidade `IRepository`, como base, e `ILocalizacao`.
 - Implemente a interface IUser para definições de Authentication e Authorization.

@@ -1,4 +1,4 @@
-namespace Havira.Business.Models.ContextoTrabalho
+namespace Havira.Business.Models.ContextoLocalizacao
 {
     public class TableConsts
     {

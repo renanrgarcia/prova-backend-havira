@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Havira.Business.Models.ContextoLocalizacao.Enums;
-using Havira.Business.Models.ContextoTrabalho;
+using NetTopologySuite.Geometries;
 
 namespace Havira.Business.Models.ContextoLocalizacao
 {
@@ -9,24 +9,24 @@ namespace Havira.Business.Models.ContextoLocalizacao
     {
         public string Nome { get; set; }
         public Categoria Categoria { get; set; }
-        public Point Localizacao { get; set; }
+        public Point Coordenadas { get; set; } = new Point(0.0, 0.0) { SRID = 4326 };
         public bool Status { get; set; }
 
-        public Localizacao(string nome, Categoria categoria, Point localizacao)
+        public Localizacao(string nome, Categoria categoria, Point coordenadas)
         {
             Nome = nome;
             Categoria = categoria;
-            Localizacao = localizacao;
+            Coordenadas = coordenadas;
             Status = true;
         }
 
         public Localizacao() { }
 
-        public void Editar(string nome, Categoria categoria, Point localizacao, bool status)
+        public void Editar(string nome, Categoria categoria, Point coordenadas, bool status)
         {
             Nome = nome.Trim();
             Categoria = categoria;
-            Localizacao = localizacao;
+            Coordenadas = coordenadas;
             Status = status;
 
             Atualizacao();
