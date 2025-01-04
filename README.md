@@ -70,6 +70,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 - Definir as entidades principais `Localizacao` e `Categoria`.
 - Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais (Point (X, Y) { SRID = 4326 }).
 - Criar interfaces de repositório para cada entidade `IRepository`, como base, e `ILocalizacao`.
+- Adicionar o pacote FluentValidation para validação de entidades. Criar as classes de validação para as entidades.
 
 #### b. **Havira.Data**
 
@@ -80,3 +81,12 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 - Implementar as interfaces de repositório utilizando o Entity Framework.
   - Criar o repositório base `Repository`, implementando `IRepository` (Que contem o contrato das operações de CRUD).
   - Criar repositório para a entidade `Localizacao`. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
+
+#### c. **Havira.Application**
+
+- Criar serviços que encapsulam a lógica de aplicação. Esses serviços utilizam repositórios da camada `Data` e regras de negócio da camada `Business` para realizar operações.
+- Estrutura da camada:
+  - `Interfaces`: Define contratos para os serviços que serão implementados na pasta App.
+  - `ViewModels`: Representa os modelos de dados que serão expostos para a camada API.
+  - `Mapper`: Responsável por mapear as entidades de domínio (Models) para ViewModels e vice-versa.
+    - AutoMapper: biblioteca .NET para mapear automaticamente objetos de um tipo para outro. Ex: ViewModels <> Models
