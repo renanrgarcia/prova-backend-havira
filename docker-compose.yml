@@ -1,0 +1,30 @@
+services:
+  postgres:
+    build: ./Database
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./Database/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database_name
+
+  api:
+    build: ./Api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      "ConnectionStrings:DefaultConnection": "Host=postgres;Database=your_database_name;Username=your_username;Password=your_password;Port=5432"
+
+  nextjs:
+    build: ./Web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
