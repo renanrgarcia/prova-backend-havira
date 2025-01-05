@@ -56,7 +56,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 ### 2. Configuração das referências
 
 - Adicionar as referências necessárias nos projetos:
-  - `Havira.API` deve referenciar `Havira.Application`.
+  - `Havira.API` deve referenciar `Havira.Application` e `Havira.Infra.Ioc`.
   - `Havira.Application` deve referenciar `Havira.Business` e `Havira.Data`.
   - `Havira.Data` deve referenciar `Havira.Business`.
   - `Havira.Infra.Ioc` deve referenciar `Havira.Application`, `Havira.Business` e `Havira.Data`.
@@ -106,7 +106,6 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 
 #### d. **Havira.Infra.Ioc**
 
-- Registre todos os serviços e repositórios para gerenciar a injeção de dependências no `Startup` da API.
-- Crie o container de injeção de dependência: `DependencyInjectionConfig.cs`.
-- Adicione os pacotes `Microsoft.AspNetCore.Identity.EntityFrameworkCore` e `Microsoft.EntityFrameworkCore` ao projeto.
+- Registre todos os serviços e repositórios para gerenciar a injeção de dependências no `Program.cs` da API.
+- Criar o container de injeção de dependência: `DependencyInjectionConfig.cs`.
 - Registre o container de injeção de dependência em `ApiConfig.cs` -> services.ResolveDependencies(configuration).
