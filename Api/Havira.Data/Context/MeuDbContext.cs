@@ -1,14 +1,17 @@
-using Havira.Business.Models.ContextoLocalizacao;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO; // Ensure this is used for WKTReader
+using System.Text.Json;
+using Havira.Business.Models.ContextoLocalizacao;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Havira.Data.Context
 {
     public class MeuDbContext : DbContext
     {
         public DbSet<Localizacao> Localizacoes { get; set; }
-        public MeuDbContext()
-        {
-        }
+
         public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
@@ -17,10 +20,18 @@ namespace Havira.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasPostgresExtension("postgis");
+
+            var coordenadasConverter = new ValueConverter<Point, string>(
+                v => v == null ? null : v.ToString(),
+                v => v == null ? null : (Point)new WKTReader().Read(v)
+            );
+
             modelBuilder.Entity<Localizacao>(b =>
             {
-                b.Property(p => p.Coordenadas).HasColumnType("geometry(Point, 4326)");
-                b.HasIndex(p => p.Coordenadas).HasMethod("GIST");
+                b.Property(p => p.Coordenadas)
+                    .HasColumnType("geography(Point,4326)")
+                    .HasConversion(coordenadasConverter);
             });
         }
 

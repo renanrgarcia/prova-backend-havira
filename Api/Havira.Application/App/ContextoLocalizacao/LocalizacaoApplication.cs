@@ -7,6 +7,9 @@ using Havira.Business.Models.ContextoLocalizacao;
 using Microsoft.EntityFrameworkCore;
 using Havira.Business.Models.ContextoLocalizacao.Validations;
 using Havira.Business.Models.ContextoLocalizacao.Enums;
+using System.Text.Json;
+using NetTopologySuite.Geometries;
+using static Havira.Business.Models.ContextoLocalizacao.Localizacao;
 
 namespace Havira.Application.App.ContextoLocalizacao
 {
@@ -133,17 +136,20 @@ namespace Havira.Application.App.ContextoLocalizacao
 
             if (!ExecutarValidacao(new LocalizacaoValidation(), localizacao)) return false;
 
-            var localizacaoViewModel = await _localizacaoRepository.ObterPorId(localizacao.Id);
+            var localizacaoExistente = await _localizacaoRepository.ObterPorId(localizacao.Id);
 
-            if (localizacaoViewModel == null)
+            if (localizacaoExistente == null)
             {
                 Notificar("Localização não encontrada.");
                 return false;
             }
 
-            localizacaoViewModel.Editar(localizacao.Nome, localizacao.Categoria, localizacao.Coordenadas);
+            localizacaoExistente.Coordenadas = JsonSerializer.Deserialize<Point>(
+                viewModel.Coordenadas.ToString(), new JsonSerializerOptions { Converters = { new PointJsonConverter() } });
 
-            await _localizacaoRepository.Atualizar(localizacaoViewModel);
+            localizacaoExistente.Editar(localizacao.Nome, localizacao.Categoria, localizacaoExistente.Coordenadas);
+
+            await _localizacaoRepository.Atualizar(localizacaoExistente);
 
             return true;
         }
