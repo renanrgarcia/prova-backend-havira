@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Havira.Application\Havira.Application.csproj" />
+    <ProjectReference Include="..\Havira.Infra.Ioc\Havira.Infra.Ioc.csproj" />
   </ItemGroup>
 
 </Project>
