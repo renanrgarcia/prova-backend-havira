@@ -106,6 +106,42 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 
 #### d. **Havira.Infra.Ioc**
 
-- Registre todos os serviços e repositórios para gerenciar a injeção de dependências no `Program.cs` da API.
+- Registrar todos os serviços e repositórios para gerenciar a injeção de dependências no `Program.cs` da API.
 - Criar o container de injeção de dependência: `DependencyInjectionConfig.cs`.
-- Registre o container de injeção de dependência em `ApiConfig.cs` -> services.ResolveDependencies(configuration).
+- Registrar o container de injeção de dependência em `ApiConfig.cs` -> services.ResolveDependencies(configuration).
+
+#### f. **HubConnect.API**
+
+- A classe `ApiConfig` deve conter a coleção de serviços e de build.
+- Criar controladores para expor os serviços da camada de Application como endpoints REST.
+  - Criar a classe `MainController` que herda de `ControllerBase`.
+  - Criar a classe `LocalizacaoController` que herda de `MainController`.
+  - Adicionar os pacotes `Microsoft.AspNetCore.Mvc.Versioning` e `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` ao projeto.
+  - Adicionar os serviços de versionamento das APIs (AddApiVersioning e AddVersionedApiExplorer) no `ApiConfig.cs`.
+  - Insirir a anotação `ApiVersion` e `Route` na classe `LocalizacaoController`.
+  - Adicionar o serviço `AddControllers` no `ApiConfig.cs`.
+- Adicionar o serviço `AddDbContext` no `ApiConfig.cs`.
+- Adicionar os serviços e as configurações de build no `Program.cs`.
+
+### 4. Dockerização da API
+
+- Criar o arquivo `Dockerfile` na raiz do projeto Havira.API para configurar a imagem do Docker.
+- Utilizar multi-stage build para otimizar a criação da imagem:
+  - **Base Image**: Define a imagem base para a aplicação com ASP.NET Core runtime.
+  - **Build Stage**: Compila a aplicação utilizando uma imagem do SDK do .NET.
+  - **Publish Stage**: Publica a aplicação em modo Release.
+  - **Final Stage**: Cria a imagem final a partir da imagem base e define o ponto de entrada da aplicação. Assim, a imagem final fica menor e mais eficiente.
+
+### 5. Propostas para próximos passos
+
+- **Testes Unitários e de Integração**: Implementar testes automatizados para garantir a qualidade do código.
+- **Expansão de Funcionalidades**: Adicionar novas operações e entidades para atender a requisitos futuros.
+- **Segurança**: Implementar autenticação e autorização para proteger a API.
+- **Paginação e Filtros**: Adicionar suporte a paginação e filtros para facilitar a consulta de dados.
+
+## Implementação do Banco de Dados
+
+### 1. PostgreSQL e PostGIS
+
+- Criar arquivo init.sql para criar o banco de dados e as tabelas, bem como adicionar extensão PostGIS.
+- Criar arquivo Dockerfile para configurar a imagem do PostgreSQL com PostGIS.

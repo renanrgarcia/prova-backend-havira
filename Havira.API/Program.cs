@@ -1,5 +1,4 @@
 using Havira.Api.Configuration;
-using Havira.Api.Configuration;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);

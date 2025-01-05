@@ -1,6 +1,10 @@
+using System.Text.Json.Serialization;
+using Havira.Application.Mapper;
 using Havira.Data.Context;
 using Havira.Infra.Ioc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 
 namespace Havira.Api.Configuration
@@ -17,7 +21,26 @@ namespace Havira.Api.Configuration
                     options.UseNpgsql(connectionString));
             }
 
-            services.AddControllers();
+            services.AddAutoMapper(typeof(AutoMapperConfig));
+
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    });
+
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+            });
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
 
             services.AddCors(options =>
             {

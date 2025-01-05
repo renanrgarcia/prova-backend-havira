@@ -5,7 +5,7 @@ namespace Havira.Application.Interfaces
         Task<IEnumerable<T>> ObterTodos();
         Task<T> ObterPorId(Guid Id);
         Task Adicionar(T viewModel);
-        Task Atualizar(T viewModel);
+        Task<bool> Atualizar(T viewModel);
         Task<bool> Remover(Guid id);
     }
 }

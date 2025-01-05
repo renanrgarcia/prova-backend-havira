@@ -5,6 +5,8 @@ using Havira.Application.Interfaces.ContextoLocalizacao;
 using Havira.Data.Context;
 using Havira.Business.Interfaces.ContextoLocalizacao;
 using Havira.Data.Repository.ContextoLocalizacao;
+using Havira.Business.Interfaces;
+using Havira.Business.Notificacoes;
 
 namespace Havira.Infra.Ioc
 {
@@ -17,6 +19,7 @@ namespace Havira.Infra.Ioc
             services.AddScoped<ILocalizacaoRepository, LocalizacaoRepository>();
 
             services.AddScoped<ILocalizacaoApplication, LocalizacaoApplication>();
+            services.AddScoped<INotificador, Notificador>();
 
             return services;
         }

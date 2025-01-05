@@ -22,13 +22,18 @@ namespace Havira.Business.Models.ContextoLocalizacao
 
         public Localizacao() { }
 
-        public void Editar(string nome, Categoria categoria, Point coordenadas, bool status)
+        public void Editar(string nome, Categoria categoria, Point coordenadas)
         {
             Nome = nome.Trim();
             Categoria = categoria;
             Coordenadas = coordenadas;
-            Status = status;
 
+            Atualizacao();
+        }
+
+        public void Desativar()
+        {
+            Status = false;
             Atualizacao();
         }
     }

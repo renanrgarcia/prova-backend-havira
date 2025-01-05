@@ -9,7 +9,6 @@ namespace Havira.Application.Mapper
         public AutoMapperConfig()
         {
             CreateMap<Localizacao, LocalizacaoViewModel>()
-                .ForMember(x => x.Categoria, map => map.MapFrom(prop => prop.Categoria))
                 .ReverseMap();
         }
     }

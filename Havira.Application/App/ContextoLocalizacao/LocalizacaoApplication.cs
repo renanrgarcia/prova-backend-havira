@@ -120,5 +120,51 @@ namespace Havira.Application.App.ContextoLocalizacao
 
             return _mapper.Map<List<LocalizacaoViewModel>>(localizacoes);
         }
+
+        public async Task<IEnumerable<LocalizacaoViewModel>> ObterTodos()
+            => _mapper.Map<IEnumerable<LocalizacaoViewModel>>(await _localizacaoRepository.ObterTodos());
+
+        public async Task Adicionar(LocalizacaoViewModel viewModel)
+            => await _localizacaoRepository.Adicionar(_mapper.Map<Localizacao>(viewModel));
+
+        public async Task<bool> Atualizar(LocalizacaoViewModel viewModel)
+        {
+            var localizacao = _mapper.Map<Localizacao>(viewModel);
+
+            if (!ExecutarValidacao(new LocalizacaoValidation(), localizacao)) return false;
+
+            var localizacaoViewModel = await _localizacaoRepository.ObterPorId(localizacao.Id);
+
+            if (localizacaoViewModel == null)
+            {
+                Notificar("Localização não encontrada.");
+                return false;
+            }
+
+            localizacaoViewModel.Editar(localizacao.Nome, localizacao.Categoria, localizacao.Coordenadas);
+
+            await _localizacaoRepository.Atualizar(localizacaoViewModel);
+
+            return true;
+        }
+
+        public async Task<bool> Remover(Guid id)
+        {
+            var localizacao = await _localizacaoRepository.ObterPorId(id);
+
+            if (localizacao == null)
+            {
+                Notificar("Localização não encontrada.");
+                return false;
+            }
+
+            await _localizacaoRepository.Remover(id);
+
+            return true;
+        }
+
+        public async void Dispose()
+            => _localizacaoRepository?.Dispose();
+
     }
 }

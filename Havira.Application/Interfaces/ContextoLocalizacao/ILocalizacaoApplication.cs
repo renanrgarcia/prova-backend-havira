@@ -3,9 +3,9 @@ using Havira.Application.ViewModel.ContextoLocalizacao;
 
 namespace Havira.Application.Interfaces.ContextoLocalizacao
 {
-    public interface ILocalizacaoApplication
+    public interface ILocalizacaoApplication : IBaseApplication<LocalizacaoViewModel>
     {
-        Task<LocalizacaoViewModel> ObterPorId(Guid Id);
+        Task<LocalizacaoViewModel> AdicionarLocalizacao(LocalizacaoViewModel localizacaoViewModel);
         Task<LocalizacaoViewModel> ObterLocalizacaoPorNome(string nome);
         Task<List<Categoria>> ObterCategorias();
         Task<List<LocalizacaoViewModel>> ObterPorCategoria(Categoria categoria);
