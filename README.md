@@ -92,9 +92,9 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - `Mapper`: Responsável por mapear as entidades de domínio (Models) para ViewModels e vice-versa.
     - AutoMapper: biblioteca .NET para mapear automaticamente objetos de um tipo para outro. Ex: ViewModels <> Models
   - `App`: Contém a lógica de aplicação, incluindo serviços que orquestram as operações de negócio e interagem com outras camadas.
-- Primeiro, definir a Interface para a camada App (`ILocalizacaoApplication`).
+- Primeiro, definir a Interface para a camada App (Ex: `IFeatureApplication`).
   - `IBaseApplication` contém o molde para criação com serviços base. Porém, cada interface contém seus contratos próprios.
-- Criar as ViewModels necessárias aos contratos definidos nas Interfaces (`LocalizacaoViewModel`).
+- Criar as ViewModels necessárias aos contratos definidos nas Interfaces (Ex: `FeatureViewModel`).
 - Criar a classe AutoMapper.
   - Instalar o pacote `DependencyInjection` para integrar o AutoMapper com o sistema de injeção de dependência.
   - Implementar os mapeamentos dos modelos de domínio (Models) para ViewModels e vice-versa.
@@ -102,7 +102,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - Adicionar o pacote FluentValidation (validação de modelos) ao projeto.
   - Criar a classe abstrata `BaseApplication`, as demais classes de `App` devem herdar dela, além de implementar as suas interfaces.
     - Em `BaseApplication` é padronizado o método de validação e processamento de mensagens de erro.
-  - Criar as demais classes da camada App com os serviços (`LocalizacaoApplication`).
+  - Criar as demais classes da camada App com os serviços (Ex: `FeatureApplication`).
 
 #### d. **Havira.Infra.Ioc**
 
