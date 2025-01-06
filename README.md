@@ -68,8 +68,8 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 
 - Criar a entidade base `Entity` e definir as constantes do SchemaDB `SchemaConsts`.
 - Definir as entidades principais `Feature` e `Properties` com suas propriedades e relacionamentos.
-- Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais (Point (X, Y) { SRID = 4326 }).
-- Criar interfaces de repositório para cada entidade `IRepository`, como base, e `ILocalizacao`.
+- Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais.
+- Criar interfaces de repositório para cada entidade `IRepository`, como base, e `IFeatureRepository` e `IPropertiesRepository` para as entidades específicas.
 - Adicionar o pacote FluentValidation para validação de entidades. Criar as classes de validação para as entidades.
 - Criar a interface e implemente as classes de notificação do Sistema ("Event Source").
 
@@ -81,7 +81,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - Criar a classe `MeuDbContext`: classe principal do EF Core que coordena sua funcionalidade para um modelo de dados.
 - Implementar as interfaces de repositório utilizando o Entity Framework.
   - Criar o repositório base `Repository`, implementando `IRepository` (Que contem o contrato das operações de CRUD).
-  - Criar repositório para a entidade `Localizacao`. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
+  - Criar repositório para as entidades. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
 
 #### c. **Havira.Application**
 

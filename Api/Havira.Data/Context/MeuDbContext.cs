@@ -1,16 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO; // Ensure this is used for WKTReader
-using System.Text.Json;
-using Havira.Business.Models.ContextoLocalizacao;
-using System.ComponentModel.DataAnnotations.Schema;
+using Havira.Business.Models.ContextoFeature;
 
 namespace Havira.Data.Context
 {
     public class MeuDbContext : DbContext
     {
-        public DbSet<Localizacao> Localizacoes { get; set; }
+        public DbSet<Feature> Localizacoes { get; set; }
+        public DbSet<Properties> Properties { get; set; }
 
         public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options)
         {
@@ -20,13 +16,11 @@ namespace Havira.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresExtension("postgis");
+            modelBuilder.Entity<Feature>()
+                .Property(e => e.Geometry)
+                .HasColumnType("geography(Point,4326)");
 
-            modelBuilder.Entity<Localizacao>(b =>
-            {
-                b.Property(p => p.Coordenadas)
-                    .HasColumnType("geography(Point,4326)");
-            });
+            modelBuilder.HasPostgresExtension("postgis");
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
