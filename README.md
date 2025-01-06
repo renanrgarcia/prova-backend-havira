@@ -67,7 +67,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 #### a. **Havira.Business**
 
 - Criar a entidade base `Entity` e definir as constantes do SchemaDB `SchemaConsts`.
-- Definir as entidades principais `Localizacao` e `Categoria`.
+- Definir as entidades principais `Feature` e `Properties` com suas propriedades e relacionamentos.
 - Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais (Point (X, Y) { SRID = 4326 }).
 - Criar interfaces de repositório para cada entidade `IRepository`, como base, e `ILocalizacao`.
 - Adicionar o pacote FluentValidation para validação de entidades. Criar as classes de validação para as entidades.
