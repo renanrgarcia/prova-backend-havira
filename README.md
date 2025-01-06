@@ -122,6 +122,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - Adicionar o serviço `AddControllers` no `ApiConfig.cs`.
 - Adicionar o serviço `AddDbContext` no `ApiConfig.cs`.
 - Adicionar o pacote `NetTopologySuite.IO.GeoJSON4STJ` para trabalhar com GeoJSON.
+- Para serializar e deserializar GeoJSON e Enums, criar um `JsonConverter` para cada tipo e registrá-los no `ApiConfig.cs`.
 - Adicionar os serviços e as configurações de build no `Program.cs`.
 
 ### 4. Dockerização da API
