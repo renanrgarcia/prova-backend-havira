@@ -7,5 +7,8 @@ namespace Havira.Application.ViewModel.ContextoFeature;
 
 public class PropertiesViewModel
 {
-    // Implementar
+    public Guid Id { get; set; }
+    public string Nome { get; set; }
+    public Categoria Categoria { get; set; }
+    public Guid FeatureId { get; set; }
 }
