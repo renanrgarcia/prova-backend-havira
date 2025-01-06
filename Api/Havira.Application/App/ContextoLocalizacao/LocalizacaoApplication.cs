@@ -144,9 +144,6 @@ namespace Havira.Application.App.ContextoLocalizacao
                 return false;
             }
 
-            localizacaoExistente.Coordenadas = JsonSerializer.Deserialize<Point>(
-                viewModel.Coordenadas.ToString(), new JsonSerializerOptions { Converters = { new PointJsonConverter() } });
-
             localizacaoExistente.Editar(localizacao.Nome, localizacao.Categoria, localizacaoExistente.Coordenadas);
 
             await _localizacaoRepository.Atualizar(localizacaoExistente);

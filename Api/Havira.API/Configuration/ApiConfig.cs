@@ -5,7 +5,7 @@ using Havira.Infra.Ioc;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-
+using NetTopologySuite.IO.Converters;
 
 namespace Havira.Api.Configuration
 {
@@ -27,6 +27,8 @@ namespace Havira.Api.Configuration
                 .AddJsonOptions(options =>
                     {
                         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        var geoJsonConverterFactory = new GeoJsonConverterFactory();
+                        options.JsonSerializerOptions.Converters.Add(geoJsonConverterFactory);
                     });
 
             services.AddApiVersioning(options =>

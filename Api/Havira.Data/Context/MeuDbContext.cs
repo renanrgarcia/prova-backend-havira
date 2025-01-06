@@ -22,16 +22,10 @@ namespace Havira.Data.Context
         {
             modelBuilder.HasPostgresExtension("postgis");
 
-            var coordenadasConverter = new ValueConverter<Point, string>(
-                v => v == null ? null : v.ToString(),
-                v => v == null ? null : (Point)new WKTReader().Read(v)
-            );
-
             modelBuilder.Entity<Localizacao>(b =>
             {
                 b.Property(p => p.Coordenadas)
-                    .HasColumnType("geography(Point,4326)")
-                    .HasConversion(coordenadasConverter);
+                    .HasColumnType("geography(Point,4326)");
             });
         }
 

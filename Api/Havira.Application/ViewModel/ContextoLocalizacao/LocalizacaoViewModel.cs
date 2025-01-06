@@ -10,7 +10,7 @@ public class LocalizacaoViewModel
     public Guid Id { get; set; }
     public string Nome { get; set; }
     public Categoria Categoria { get; set; }
-    [JsonConverter(typeof(PointJsonConverter))]
+    // [JsonConverter(typeof(PointJsonConverter))]
     public Point Coordenadas { get; set; }
     public bool Status { get; set; }
 }
