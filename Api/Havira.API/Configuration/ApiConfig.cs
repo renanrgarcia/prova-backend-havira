@@ -18,7 +18,7 @@ namespace Havira.Api.Configuration
             if (!string.IsNullOrEmpty(connectionString))
             {
                 services.AddDbContext<MeuDbContext>(options =>
-                    options.UseNpgsql(connectionString));
+                    options.UseNpgsql(connectionString, x => x.UseNetTopologySuite()));
             }
 
             services.AddAutoMapper(typeof(AutoMapperConfig));

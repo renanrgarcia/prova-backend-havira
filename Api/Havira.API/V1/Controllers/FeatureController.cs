@@ -12,19 +12,16 @@ namespace Havira.API.V1.Controllers
     public class FeatureController : MainController
     {
         private readonly IFeatureApplication _featureApplication;
-        private readonly IGeoJsonHelper _geoJsonHelper;
 
         public FeatureController(
             INotificador notificador,
-            IGeoJsonHelper geoJsonHelper,
             IFeatureApplication featureApplication) : base(notificador)
         {
             _featureApplication = featureApplication;
-            _geoJsonHelper = geoJsonHelper;
         }
 
         [HttpGet("obterTodos")]
-        public async Task<ActionResult<IEnumerable<FeatureViewModel>>> ObterTodos()
+        public async Task<ActionResult<IEnumerable<string>>> ObterTodos()
         {
             var localizacoes = await _featureApplication.ObterTodos();
 
@@ -32,7 +29,7 @@ namespace Havira.API.V1.Controllers
 
             foreach (var localizacao in localizacoes)
             {
-                localizacao.Geometry = _geoJsonHelper.DeserializeGeoJson(localizacao.Geometry.ToString());
+                localizacao.ToGeoJson();
             }
 
             return CustomResponse(localizacoes);
@@ -46,9 +43,7 @@ namespace Havira.API.V1.Controllers
 
             if (feature == null) return CustomResponse();
 
-            var geoJson = _geoJsonHelper.SerializeGeoJson(feature.Geometry);
-
-            return geoJson;
+            return feature.ToGeoJson();
         }
 
         [HttpPost("adicionar")]
@@ -58,7 +53,7 @@ namespace Havira.API.V1.Controllers
 
             var resultado = await _featureApplication.AdicionarFeature(featureViewModel);
 
-            return CustomResponse(resultado);
+            return CustomResponse(resultado.ToGeoJson());
         }
 
         [HttpPut("atualizar")]

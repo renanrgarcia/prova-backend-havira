@@ -16,10 +16,6 @@ namespace Havira.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Feature>()
-                .Property(e => e.Geometry)
-                .HasColumnType("geography(Point,4326)");
-
             modelBuilder.HasPostgresExtension("postgis");
         }
 

@@ -7,6 +7,7 @@ using Havira.Business.Models.ContextoFeature;
 using Havira.Business.Models.ContextoFeature.Validations;
 using Havira.Business.Models.ContextoFeature.Enums;
 using Havira.Data.Repository.ContextoFeature;
+using NetTopologySuite.Geometries;
 
 
 namespace Havira.Application.App.ContextoFeature
@@ -66,7 +67,11 @@ namespace Havira.Application.App.ContextoFeature
                 return null;
             }
 
-            var feature = new Feature(featureViewModel.Type, featureViewModel.Geometry);
+            var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
+
+            var geometry = geometryFactory.CreatePoint(new Coordinate(featureViewModel.Geometry.Coordinate.X, featureViewModel.Geometry.Coordinate.Y));
+
+            var feature = new Feature(featureViewModel.Type, geometry);
 
             var properties = await _propertiesRepository.ObterPropertiesPorNome(featureViewModel.Properties.Nome);
 
