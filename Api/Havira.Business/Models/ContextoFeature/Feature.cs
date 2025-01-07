@@ -11,12 +11,11 @@ namespace Havira.Business.Models.ContextoFeature
         public Properties Properties { get; set; }
         public bool Status { get; set; }
 
-        public Feature(string type, Geometry geometry, Properties properties, bool status)
+        public Feature(string type, Geometry geometry)
         {
             Type = type;
             Geometry = geometry;
-            Properties = properties;
-            Status = status;
+            Status = true;
         }
 
         public Feature() { }

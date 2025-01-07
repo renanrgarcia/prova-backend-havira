@@ -1,6 +1,6 @@
 using AutoMapper;
-using Havira.Application.ViewModel.ContextoLocalizacao;
-using Havira.Business.Models.ContextoLocalizacao;
+using Havira.Application.ViewModel.ContextoFeature;
+using Havira.Business.Models.ContextoFeature;
 
 namespace Havira.Application.Mapper
 {
@@ -8,7 +8,11 @@ namespace Havira.Application.Mapper
     {
         public AutoMapperConfig()
         {
-            CreateMap<Localizacao, LocalizacaoViewModel>()
+            CreateMap<Feature, FeatureViewModel>()
+                .ForMember(x => x.Properties, map => map.MapFrom(prop => prop.Properties))
+                .ReverseMap();
+
+            CreateMap<Properties, PropertiesViewModel>()
                 .ReverseMap();
         }
     }

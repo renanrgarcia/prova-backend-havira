@@ -7,6 +7,5 @@ namespace Havira.Application.Interfaces.ContextoFeature
     {
         Task<FeatureViewModel> AdicionarFeature(FeatureViewModel featureViewModel);
         Task<FeatureViewModel> ObterFeaturePorNome(string nome);
-        Task<List<FeatureViewModel>> ObterPorCategoria(Categoria categoria);
     }
 }

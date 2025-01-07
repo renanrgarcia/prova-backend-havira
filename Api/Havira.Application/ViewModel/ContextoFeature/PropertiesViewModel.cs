@@ -1,14 +1,12 @@
-using System.Text.Json.Serialization;
 using Havira.Business.Models.ContextoFeature.Enums;
-using NetTopologySuite.Geometries;
-using static Havira.Business.Models.ContextoFeature.Properties;
+using Newtonsoft.Json;
 
 namespace Havira.Application.ViewModel.ContextoFeature;
 
 public class PropertiesViewModel
 {
-    public Guid Id { get; set; }
+    [JsonProperty("nome")]
     public string Nome { get; set; }
+    [JsonProperty("categoria")]
     public Categoria Categoria { get; set; }
-    public Guid FeatureId { get; set; }
 }

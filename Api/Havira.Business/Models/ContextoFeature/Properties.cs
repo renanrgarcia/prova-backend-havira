@@ -9,9 +9,8 @@ namespace Havira.Business.Models.ContextoFeature
         public Categoria Categoria { get; set; }
         public Feature feature { get; set; }
 
-        public Properties(Feature feature, string nome, Categoria categoria)
+        public Properties(string nome, Categoria categoria)
         {
-            FeatureId = feature.Id;
             Nome = nome;
             Categoria = categoria;
         }
