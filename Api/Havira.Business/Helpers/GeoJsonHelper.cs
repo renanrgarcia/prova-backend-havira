@@ -1,11 +1,12 @@
+using Havira.Business.Interfaces;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using Newtonsoft.Json;
 
 namespace Havira.Business.Helpers;
-public class GeoJsonHelper
+public class GeoJsonHelper : IGeoJsonHelper
 {
-    public static Geometry DeserializeGeoJson(string geoJson)
+    public Geometry DeserializeGeoJson(string geoJson)
     {
         var serializer = GeoJsonSerializer.Create();
         using (var stringReader = new StringReader(geoJson))
@@ -15,7 +16,7 @@ public class GeoJsonHelper
         }
     }
 
-    public static string SerializeGeoJson(Geometry geometry)
+    public string SerializeGeoJson(Geometry geometry)
     {
         var serializer = GeoJsonSerializer.Create();
         string geoJson;

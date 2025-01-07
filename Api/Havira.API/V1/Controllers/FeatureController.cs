@@ -12,12 +12,15 @@ namespace Havira.API.V1.Controllers
     public class FeatureController : MainController
     {
         private readonly IFeatureApplication _featureApplication;
+        private readonly IGeoJsonHelper _geoJsonHelper;
 
         public FeatureController(
             INotificador notificador,
+            IGeoJsonHelper geoJsonHelper,
             IFeatureApplication featureApplication) : base(notificador)
         {
             _featureApplication = featureApplication;
+            _geoJsonHelper = geoJsonHelper;
         }
 
         [HttpGet("obterTodos")]
@@ -27,21 +30,29 @@ namespace Havira.API.V1.Controllers
 
             if (!localizacoes.Any()) return CustomResponse();
 
+            foreach (var localizacao in localizacoes)
+            {
+                localizacao.Geometry = _geoJsonHelper.DeserializeGeoJson(localizacao.Geometry.ToString());
+            }
+
             return CustomResponse(localizacoes);
         }
 
         [HttpGet("obter/{id:guid}")]
-        public async Task<ActionResult<FeatureViewModel>> ObterPorId(Guid id)
+        public async Task<ActionResult<string>> ObterPorId(Guid id)
         {
+
             var feature = await _featureApplication.ObterPorId(id);
 
             if (feature == null) return CustomResponse();
 
-            return feature;
+            var geoJson = _geoJsonHelper.SerializeGeoJson(feature.Geometry);
+
+            return geoJson;
         }
 
         [HttpPost("adicionar")]
-        public async Task<IActionResult> AdicionarFeature(FeatureViewModel featureViewModel)
+        public async Task<IActionResult> AdicionarFeature([FromBody] FeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -51,7 +62,7 @@ namespace Havira.API.V1.Controllers
         }
 
         [HttpPut("atualizar")]
-        public async Task<IActionResult> AtualizarFeature(FeatureViewModel featureViewModel)
+        public async Task<IActionResult> AtualizarFeature([FromBody] FeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 

@@ -7,6 +7,7 @@ using Havira.Business.Interfaces.ContextoFeature;
 using Havira.Data.Repository.ContextoFeature;
 using Havira.Business.Interfaces;
 using Havira.Business.Helpers.Notificacoes;
+using Havira.Business.Helpers;
 
 namespace Havira.Infra.Ioc
 {
@@ -22,6 +23,7 @@ namespace Havira.Infra.Ioc
             services.AddScoped<IFeatureApplication, FeatureApplication>();
             services.AddScoped<IPropertiesApplication, PropertiesApplication>();
             services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<IGeoJsonHelper, GeoJsonHelper>();
 
             return services;
         }

@@ -162,7 +162,7 @@ namespace Havira.Application.App.ContextoFeature
             return true;
         }
 
-        public async void Dispose()
+        public void Dispose()
             => _featureRepository?.Dispose();
     }
 }
