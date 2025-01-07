@@ -1,4 +1,4 @@
-using Havira.Business.Notificacoes;
+using Havira.Business.Helpers.Notificacoes;
 
 namespace Havira.Business.Interfaces
 {

@@ -1,12 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Havira.Application.App.ContextoLocalizacao;
-using Havira.Application.Interfaces.ContextoLocalizacao;
+using Havira.Application.App.ContextoFeature;
+using Havira.Application.Interfaces.ContextoFeature;
 using Havira.Data.Context;
-using Havira.Business.Interfaces.ContextoLocalizacao;
-using Havira.Data.Repository.ContextoLocalizacao;
+using Havira.Business.Interfaces.ContextoFeature;
+using Havira.Data.Repository.ContextoFeature;
 using Havira.Business.Interfaces;
-using Havira.Business.Notificacoes;
+using Havira.Business.Helpers.Notificacoes;
+using Havira.Business.Helpers;
 
 namespace Havira.Infra.Ioc
 {
@@ -16,10 +17,13 @@ namespace Havira.Infra.Ioc
         {
             services.AddScoped<MeuDbContext>();
 
-            services.AddScoped<ILocalizacaoRepository, LocalizacaoRepository>();
+            services.AddScoped<IFeatureRepository, FeatureRepository>();
+            services.AddScoped<IPropertiesRepository, PropertiesRepository>();
 
-            services.AddScoped<ILocalizacaoApplication, LocalizacaoApplication>();
+            services.AddScoped<IFeatureApplication, FeatureApplication>();
+            services.AddScoped<IPropertiesApplication, PropertiesApplication>();
             services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<IGeoJsonHelper, GeoJsonHelper>();
 
             return services;
         }

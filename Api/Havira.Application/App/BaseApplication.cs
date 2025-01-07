@@ -1,8 +1,8 @@
 using FluentValidation;
 using FluentValidation.Results;
+using Havira.Business.Helpers.Notificacoes;
 using Havira.Business.Interfaces;
 using Havira.Business.Models;
-using Havira.Business.Notificacoes;
 
 namespace Havira.Application.App
 {

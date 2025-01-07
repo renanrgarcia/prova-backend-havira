@@ -4,8 +4,8 @@ using Havira.Data.Context;
 using Havira.Infra.Ioc;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 using NetTopologySuite.IO.Converters;
+using Newtonsoft.Json;
 
 namespace Havira.Api.Configuration
 {
@@ -18,7 +18,7 @@ namespace Havira.Api.Configuration
             if (!string.IsNullOrEmpty(connectionString))
             {
                 services.AddDbContext<MeuDbContext>(options =>
-                    options.UseNpgsql(connectionString));
+                    options.UseNpgsql(connectionString, x => x.UseNetTopologySuite()));
             }
 
             services.AddAutoMapper(typeof(AutoMapperConfig));
@@ -27,9 +27,11 @@ namespace Havira.Api.Configuration
                 .AddJsonOptions(options =>
                     {
                         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                        var geoJsonConverterFactory = new GeoJsonConverterFactory();
-                        options.JsonSerializerOptions.Converters.Add(geoJsonConverterFactory);
                     });
+            // .AddNewtonsoftJson(options =>
+            //     {
+            //         options.SerializerSettings.Converters.Add(new GeometryConverter());
+            //     });
 
             services.AddApiVersioning(options =>
             {

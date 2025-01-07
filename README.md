@@ -67,9 +67,9 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 #### a. **Havira.Business**
 
 - Criar a entidade base `Entity` e definir as constantes do SchemaDB `SchemaConsts`.
-- Definir as entidades principais `Localizacao` e `Categoria`.
-- Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais (Point (X, Y) { SRID = 4326 }).
-- Criar interfaces de repositório para cada entidade `IRepository`, como base, e `ILocalizacao`.
+- Definir as entidades principais `Feature` e `Properties` com suas propriedades e relacionamentos.
+- Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais.
+- Criar interfaces de repositório para cada entidade `IRepository`, como base, e `IFeatureRepository` e `IPropertiesRepository` para as entidades específicas.
 - Adicionar o pacote FluentValidation para validação de entidades. Criar as classes de validação para as entidades.
 - Criar a interface e implemente as classes de notificação do Sistema ("Event Source").
 
@@ -81,7 +81,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - Criar a classe `MeuDbContext`: classe principal do EF Core que coordena sua funcionalidade para um modelo de dados.
 - Implementar as interfaces de repositório utilizando o Entity Framework.
   - Criar o repositório base `Repository`, implementando `IRepository` (Que contem o contrato das operações de CRUD).
-  - Criar repositório para a entidade `Localizacao`. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
+  - Criar repositório para as entidades. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
 
 #### c. **Havira.Application**
 
@@ -92,9 +92,9 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - `Mapper`: Responsável por mapear as entidades de domínio (Models) para ViewModels e vice-versa.
     - AutoMapper: biblioteca .NET para mapear automaticamente objetos de um tipo para outro. Ex: ViewModels <> Models
   - `App`: Contém a lógica de aplicação, incluindo serviços que orquestram as operações de negócio e interagem com outras camadas.
-- Primeiro, definir a Interface para a camada App (`ILocalizacaoApplication`).
+- Primeiro, definir a Interface para a camada App (Ex: `IFeatureApplication`).
   - `IBaseApplication` contém o molde para criação com serviços base. Porém, cada interface contém seus contratos próprios.
-- Criar as ViewModels necessárias aos contratos definidos nas Interfaces (`LocalizacaoViewModel`).
+- Criar as ViewModels necessárias aos contratos definidos nas Interfaces (Ex: `FeatureViewModel`).
 - Criar a classe AutoMapper.
   - Instalar o pacote `DependencyInjection` para integrar o AutoMapper com o sistema de injeção de dependência.
   - Implementar os mapeamentos dos modelos de domínio (Models) para ViewModels e vice-versa.
@@ -102,7 +102,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - Adicionar o pacote FluentValidation (validação de modelos) ao projeto.
   - Criar a classe abstrata `BaseApplication`, as demais classes de `App` devem herdar dela, além de implementar as suas interfaces.
     - Em `BaseApplication` é padronizado o método de validação e processamento de mensagens de erro.
-  - Criar as demais classes da camada App com os serviços (`LocalizacaoApplication`).
+  - Criar as demais classes da camada App com os serviços (Ex: `FeatureApplication`).
 
 #### d. **Havira.Infra.Ioc**
 
@@ -122,6 +122,7 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - Adicionar o serviço `AddControllers` no `ApiConfig.cs`.
 - Adicionar o serviço `AddDbContext` no `ApiConfig.cs`.
 - Adicionar o pacote `NetTopologySuite.IO.GeoJSON4STJ` para trabalhar com GeoJSON.
+- Para serializar e deserializar GeoJSON e Enums, criar um `JsonConverter` para cada tipo e registrá-los no `ApiConfig.cs`.
 - Adicionar os serviços e as configurações de build no `Program.cs`.
 
 ### 4. Dockerização da API
