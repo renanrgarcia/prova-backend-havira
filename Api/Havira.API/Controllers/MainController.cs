@@ -1,5 +1,5 @@
 using Havira.Business.Interfaces;
-using Havira.Business.Notificacoes;
+using Havira.Business.Helpers.Notificacoes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 

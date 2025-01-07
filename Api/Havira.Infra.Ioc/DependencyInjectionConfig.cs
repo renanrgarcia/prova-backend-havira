@@ -6,7 +6,7 @@ using Havira.Data.Context;
 using Havira.Business.Interfaces.ContextoFeature;
 using Havira.Data.Repository.ContextoFeature;
 using Havira.Business.Interfaces;
-using Havira.Business.Notificacoes;
+using Havira.Business.Helpers.Notificacoes;
 
 namespace Havira.Infra.Ioc
 {
