@@ -1,6 +1,6 @@
 namespace Havira.Business.Models.ContextoFeature.Enums
 {
-    public enum Categoria
+    public enum Category
     {
         Residencial = 1,
         Comercial = 2,

@@ -1,60 +1,32 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Havira.Business.Helpers;
+using Havira.Business.Models.ContextoFeature.Enums;
 using NetTopologySuite.Geometries;
-using Newtonsoft.Json;
 
 namespace Havira.Business.Models.ContextoFeature
 {
     [Table(name: "feature", Schema = "dbo")]
     public class Feature : Entity
     {
-        public string Type { get; set; } = "Feature";
-        public Geometry Geometry { get; set; }
-        public Properties Properties { get; set; }
-        public bool Status { get; set; }
+        public string Name { get; set; }
+        public Category Category { get; set; }
+        public Point Point { get; set; }
 
-        public Feature(string type, Geometry geometry)
+        public Feature(string name, Category category, Point point)
         {
-            Type = type;
-            Geometry = geometry;
-            Status = true;
+            Name = name;
+            Category = category;
+            Point = point;
         }
 
         public Feature() { }
 
-        public void Editar(string type, Geometry geometry, Properties properties)
+        public void Editar(string name, Category category, Point point)
         {
-            Type = type;
-            Geometry = new GeometryFactory().CreateGeometry(Point.Empty);
-            Properties = properties;
+            Name = name;
+            Category = category;
+            Point = point;
 
             Atualizacao();
-        }
-
-        public void Desativar()
-        {
-            Status = false;
-            Atualizacao();
-        }
-
-        public string ToGeoJson()
-        {
-            var feature = new
-            {
-                id = Id,
-                type = Type,
-                geometry = new
-                {
-                    type = Geometry.GeometryType,
-                    coordinates = Geometry.Coordinates
-                },
-                properties = new
-                {
-                    nome = Properties.Nome,
-                    categoria = Properties.Categoria
-                }
-            };
-            return JsonConvert.SerializeObject(feature);
         }
     }
 }
