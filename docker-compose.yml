@@ -17,7 +17,7 @@ services:
     depends_on:
       - postgres
     environment:
-      "ConnectionStrings:LocalizacaoConnection": "Host=postgres;Database=your_database_name;Username=your_username;Password=your_password;Port=5432"
+      "ConnectionStrings:DefaultConnection": "Host=postgres;Database=your_database_name;Username=your_username;Password=your_password;Port=5432"
 
   nextjs:
     build: ./Web

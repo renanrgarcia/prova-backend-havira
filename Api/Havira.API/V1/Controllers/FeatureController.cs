@@ -27,10 +27,14 @@ namespace Havira.API.V1.Controllers
 
             if (!localizacoes.Any()) return CustomResponse();
 
-            foreach (var localizacao in localizacoes)
-            {
-                localizacao.ToGeoJson();
-            }
+            Console.WriteLine("Localizações: " + localizacoes.ToArray());
+
+            // foreach (var localizacao in localizacoes)
+            // {
+            //     localizacao.ToGeoJson();
+            // }
+
+            // Console.WriteLine("Localizações2: " + localizacoes);
 
             return CustomResponse(localizacoes);
         }

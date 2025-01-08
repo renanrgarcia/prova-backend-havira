@@ -5,7 +5,7 @@ namespace Havira.Data.Context
 {
     public class MeuDbContext : DbContext
     {
-        public DbSet<Feature> Localizacoes { get; set; }
+        public DbSet<Feature> Features { get; set; }
         public DbSet<Properties> Properties { get; set; }
 
         public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options)

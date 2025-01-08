@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Havira.Business.Models.ContextoFeature.Enums;
 
 namespace Havira.Business.Models.ContextoFeature
 {
+    [Table(name: "properties", Schema = "dbo")]
     public class Properties : Entity
     {
         public Guid FeatureId { get; set; }
