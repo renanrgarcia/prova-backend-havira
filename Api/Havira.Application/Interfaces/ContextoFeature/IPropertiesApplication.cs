@@ -1,7 +1,7 @@
-using Havira.Business.Models.ContextoFeature.Enums;
-using Havira.Application.ViewModel.ContextoFeature;
+using Havira.Business.Models.ContextFeature.Enums;
+using Havira.Application.ViewModel.ContextFeature;
 
-namespace Havira.Application.Interfaces.ContextoFeature
+namespace Havira.Application.Interfaces.ContextFeature
 {
     public interface IPropertiesApplication : IBaseApplication<PropertiesViewModel>
     {

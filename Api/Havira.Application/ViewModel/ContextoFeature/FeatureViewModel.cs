@@ -2,7 +2,7 @@ using Havira.Business.Helpers;
 using NetTopologySuite.Geometries;
 using Newtonsoft.Json;
 
-namespace Havira.Application.ViewModel.ContextoFeature;
+namespace Havira.Application.ViewModel.ContextFeature;
 
 public class FeatureViewModel
 {

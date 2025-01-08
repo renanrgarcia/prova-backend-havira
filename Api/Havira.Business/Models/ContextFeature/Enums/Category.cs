@@ -1,4 +1,4 @@
-namespace Havira.Business.Models.ContextoFeature.Enums
+namespace Havira.Business.Models.ContextFeature.Enums
 {
     public enum Category
     {

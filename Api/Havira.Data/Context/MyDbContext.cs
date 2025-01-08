@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using Havira.Business.Models.ContextoFeature;
+using Havira.Business.Models.ContextFeature;
 
 namespace Havira.Data.Context
 {
-    public class MeuDbContext : DbContext
+    public class MyDbContext : DbContext
     {
         public DbSet<Feature> Features { get; set; }
-        public DbSet<Properties> Properties { get; set; }
 
-        public MeuDbContext(DbContextOptions<MeuDbContext> options) : base(options)
+        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;

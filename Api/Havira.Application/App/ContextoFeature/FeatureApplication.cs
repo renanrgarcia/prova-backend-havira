@@ -1,16 +1,16 @@
 using AutoMapper;
 using Havira.Business.Interfaces;
-using Havira.Business.Interfaces.ContextoFeature;
-using Havira.Application.Interfaces.ContextoFeature;
-using Havira.Application.ViewModel.ContextoFeature;
-using Havira.Business.Models.ContextoFeature;
-using Havira.Business.Models.ContextoFeature.Validations;
-using Havira.Business.Models.ContextoFeature.Enums;
-using Havira.Data.Repository.ContextoFeature;
+using Havira.Business.Interfaces.ContextFeature;
+using Havira.Application.Interfaces.ContextFeature;
+using Havira.Application.ViewModel.ContextFeature;
+using Havira.Business.Models.ContextFeature;
+using Havira.Business.Models.ContextFeature.Validations;
+using Havira.Business.Models.ContextFeature.Enums;
+using Havira.Data.Repository.ContextFeature;
 using NetTopologySuite.Geometries;
 
 
-namespace Havira.Application.App.ContextoFeature
+namespace Havira.Application.App.ContextFeature
 {
     public class FeatureApplication : BaseApplication, IFeatureApplication
     {

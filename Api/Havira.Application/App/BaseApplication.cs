@@ -1,6 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
-using Havira.Business.Helpers.Notificacoes;
+using Havira.Business.Helpers.Notification;
 using Havira.Business.Interfaces;
 using Havira.Business.Models;
 
@@ -8,11 +8,11 @@ namespace Havira.Application.App
 {
     public abstract class BaseApplication
     {
-        private readonly INotificador _notificador;
+        private readonly INotificator _notificator;
 
-        protected BaseApplication(INotificador notificador)
+        protected BaseApplication(INotificator notificador)
         {
-            _notificador = notificador;
+            _notificator = notificador;
         }
 
         protected void Notificar(ValidationResult validationResult)
@@ -23,19 +23,19 @@ namespace Havira.Application.App
             }
         }
 
-        protected void Notificar(string mensagem)
+        protected void Notificar(string message)
         {
-            _notificador.Handle(new Notificacao(mensagem));
+            _notificator.Handle(new Notification(message));
         }
 
-        protected void Notificar(IEnumerable<string> mensagens)
+        protected void Notificar(IEnumerable<string> messages)
         {
-            var notificacoes = new List<Notificacao>();
+            var notifications = new List<Notification>();
 
-            foreach (var mensagem in mensagens)
-                notificacoes.Add(new Notificacao(mensagem));
+            foreach (var message in messages)
+                notifications.Add(new Notification(message));
 
-            _notificador.Handle(notificacoes);
+            _notificator.Handle(notifications);
         }
 
         protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity

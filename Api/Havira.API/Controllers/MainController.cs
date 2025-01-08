@@ -17,7 +17,7 @@ namespace Havira.Api.Controllers
 
         protected bool OperacaoValida()
         {
-            return !_notificador.TemNotificacao();
+            return !_notificador.TemNotification();
         }
 
         protected ActionResult CustomResponse(object result = null)
@@ -34,7 +34,7 @@ namespace Havira.Api.Controllers
             return BadRequest(new
             {
                 success = false,
-                errors = _notificador.ObterNotificacoes().Select(n => n.Mensagem)
+                errors = _notificador.ObterNotificacoes().Select(n => n.Message)
             });
         }
 
@@ -54,9 +54,9 @@ namespace Havira.Api.Controllers
             }
         }
 
-        protected void NotificarErro(string mensagem)
+        protected void NotificarErro(string message)
         {
-            _notificador.Handle(new Notificacao(mensagem));
+            _notificador.Handle(new Notification(message));
         }
     }
 }

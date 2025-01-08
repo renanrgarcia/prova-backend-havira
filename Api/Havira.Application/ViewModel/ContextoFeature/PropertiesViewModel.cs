@@ -1,7 +1,7 @@
-using Havira.Business.Models.ContextoFeature.Enums;
+using Havira.Business.Models.ContextFeature.Enums;
 using Newtonsoft.Json;
 
-namespace Havira.Application.ViewModel.ContextoFeature;
+namespace Havira.Application.ViewModel.ContextFeature;
 
 public class PropertiesViewModel
 {

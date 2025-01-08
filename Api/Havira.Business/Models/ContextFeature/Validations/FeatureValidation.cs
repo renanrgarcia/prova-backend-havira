@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Havira.Business.Models.ContextoFeature.Validations
+namespace Havira.Business.Models.ContextFeature.Validations
 {
     public class FeatureValidation : AbstractValidator<Feature>
     {

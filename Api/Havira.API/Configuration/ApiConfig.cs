@@ -19,7 +19,7 @@ namespace Havira.Api.Configuration
             {
                 try
                 {
-                    services.AddDbContext<MeuDbContext>(options =>
+                    services.AddDbContext<MyDbContext>(options =>
                         options.UseNpgsql(connectionString, x => x.UseNetTopologySuite()));
                 }
                 catch (Exception ex)

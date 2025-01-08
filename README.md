@@ -78,10 +78,10 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 - Configurar o DbContext para gerenciar as operações de banco de dados.
   - Adicionar o pacote NuGet `EntityFrameworkCore` como ORM.
   - Adicionar o pacote NuGet `EntityFrameworkCore.PostgreSQL` para trabalhar com o PostgreSQL.
-  - Criar a classe `MeuDbContext`: classe principal do EF Core que coordena sua funcionalidade para um modelo de dados.
+  - Criar a classe `MyDbContext`: classe principal do EF Core que coordena sua funcionalidade para um modelo de dados.
 - Implementar as interfaces de repositório utilizando o Entity Framework.
   - Criar o repositório base `Repository`, implementando `IRepository` (Que contem o contrato das operações de CRUD).
-  - Criar repositório para as entidades. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
+  - Criar repositório para as entidades. Ele estende `Repository` e implementa a interface para a entidade (`IFeatureRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
 
 #### c. **Havira.Application**
 
@@ -115,10 +115,10 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 - A classe `ApiConfig` deve conter a coleção de serviços e de build.
 - Criar controladores para expor os serviços da camada de Application como endpoints REST.
   - Criar a classe `MainController` que herda de `ControllerBase`.
-  - Criar a classe `LocalizacaoController` que herda de `MainController`.
+  - Criar a classe `FeatureController` que herda de `MainController`.
   - Adicionar os pacotes `Microsoft.AspNetCore.Mvc.Versioning` e `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` ao projeto.
   - Adicionar os serviços de versionamento das APIs (AddApiVersioning e AddVersionedApiExplorer) no `ApiConfig.cs`.
-  - Insirir a anotação `ApiVersion` e `Route` na classe `LocalizacaoController`.
+  - Insirir a anotação `ApiVersion` e `Route` na classe `FeatureController`.
   - Adicionar o serviço `AddControllers` no `ApiConfig.cs`.
 - Adicionar o serviço `AddDbContext` no `ApiConfig.cs`.
 - Adicionar o pacote `NetTopologySuite.IO.GeoJSON4STJ` para trabalhar com GeoJSON.

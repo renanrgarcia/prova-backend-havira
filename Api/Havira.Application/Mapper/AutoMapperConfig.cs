@@ -1,6 +1,6 @@
 using AutoMapper;
-using Havira.Application.ViewModel.ContextoFeature;
-using Havira.Business.Models.ContextoFeature;
+using Havira.Application.ViewModel.ContextFeature;
+using Havira.Business.Models.ContextFeature;
 
 namespace Havira.Application.Mapper
 {

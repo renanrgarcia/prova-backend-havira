@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Havira.Business.Models.ContextoFeature.Enums;
+using Havira.Business.Models.ContextFeature.Enums;
 using NetTopologySuite.Geometries;
 
-namespace Havira.Business.Models.ContextoFeature
+namespace Havira.Business.Models.ContextFeature
 {
     [Table(name: "feature", Schema = "dbo")]
     public class Feature : Entity
