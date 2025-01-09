@@ -1,30 +1,23 @@
 services:
-  postgres:
+  database:
     build: ./Database
     ports:
       - "5432:5432"
     volumes:
       - ./Database/postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: your_database_name
+      POSTGRES_USER: havira_user
+      POSTGRES_PASSWORD: XT8#5£1zl$m!
+      POSTGRES_DB: feature_database
 
   api:
     build: ./Api
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      - database
     environment:
-      "ConnectionStrings:LocalizacaoConnection": "Host=postgres;Database=your_database_name;Username=your_username;Password=your_password;Port=5432"
-
-  nextjs:
-    build: ./Web
-    ports:
-      - "3000:3000"
-    depends_on:
-      - api
+      "ConnectionStrings:DefaultConnection": "Host=database;Database=feature_database;Username=havira_user;Password=XT8#5£1zl$m!;Port=5432"
 
 volumes:
   postgres_data:

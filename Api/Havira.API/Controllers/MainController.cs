@@ -1,5 +1,5 @@
 using Havira.Business.Interfaces;
-using Havira.Business.Helpers.Notificacoes;
+using Havira.Business.Helpers.Notification;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -8,21 +8,21 @@ namespace Havira.Api.Controllers
     [ApiController]
     public abstract class MainController : ControllerBase
     {
-        private readonly INotificador _notificador;
+        private readonly INotificator _notificator;
 
-        protected MainController(INotificador notificador)
+        protected MainController(INotificator notificator)
         {
-            _notificador = notificador;
+            _notificator = notificator;
         }
 
-        protected bool OperacaoValida()
+        protected bool ValidOperation()
         {
-            return !_notificador.TemNotificacao();
+            return !_notificator.HasNotification();
         }
 
         protected ActionResult CustomResponse(object result = null)
         {
-            if (OperacaoValida())
+            if (ValidOperation())
             {
                 return Ok(new
                 {
@@ -34,7 +34,7 @@ namespace Havira.Api.Controllers
             return BadRequest(new
             {
                 success = false,
-                errors = _notificador.ObterNotificacoes().Select(n => n.Mensagem)
+                errors = _notificator.GetNotifications().Select(n => n.Message)
             });
         }
 
@@ -54,9 +54,9 @@ namespace Havira.Api.Controllers
             }
         }
 
-        protected void NotificarErro(string mensagem)
+        protected void NotificarErro(string message)
         {
-            _notificador.Handle(new Notificacao(mensagem));
+            _notificator.Handle(new Notification(message));
         }
     }
 }

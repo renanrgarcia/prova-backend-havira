@@ -13,12 +13,19 @@ namespace Havira.Api.Configuration
     {
         public static IServiceCollection AddApiConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("LocalizacaoConnection");
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             if (!string.IsNullOrEmpty(connectionString))
             {
-                services.AddDbContext<MeuDbContext>(options =>
-                    options.UseNpgsql(connectionString, x => x.UseNetTopologySuite()));
+                try
+                {
+                    services.AddDbContext<MyDbContext>(options =>
+                        options.UseNpgsql(connectionString, x => x.UseNetTopologySuite()));
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error connecting to database: {ex.Message}");
+                }
             }
 
             services.AddAutoMapper(typeof(AutoMapperConfig));
@@ -27,11 +34,9 @@ namespace Havira.Api.Configuration
                 .AddJsonOptions(options =>
                     {
                         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                        options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
                     });
-            // .AddNewtonsoftJson(options =>
-            //     {
-            //         options.SerializerSettings.Converters.Add(new GeometryConverter());
-            //     });
 
             services.AddApiVersioning(options =>
             {

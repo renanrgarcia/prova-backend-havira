@@ -1,6 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
-using Havira.Business.Helpers.Notificacoes;
+using Havira.Business.Helpers.Notification;
 using Havira.Business.Interfaces;
 using Havira.Business.Models;
 
@@ -8,41 +8,41 @@ namespace Havira.Application.App
 {
     public abstract class BaseApplication
     {
-        private readonly INotificador _notificador;
+        private readonly INotificator _notificator;
 
-        protected BaseApplication(INotificador notificador)
+        protected BaseApplication(INotificator notificator)
         {
-            _notificador = notificador;
+            _notificator = notificator;
         }
 
-        protected void Notificar(ValidationResult validationResult)
+        protected void Notificate(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
             {
-                Notificar(error.ErrorMessage);
+                Notificate(error.ErrorMessage);
             }
         }
 
-        protected void Notificar(string mensagem)
+        protected void Notificate(string message)
         {
-            _notificador.Handle(new Notificacao(mensagem));
+            _notificator.Handle(new Notification(message));
         }
 
-        protected void Notificar(IEnumerable<string> mensagens)
+        protected void Notificate(IEnumerable<string> messages)
         {
-            var notificacoes = new List<Notificacao>();
+            var notifications = new List<Notification>();
 
-            foreach (var mensagem in mensagens)
-                notificacoes.Add(new Notificacao(mensagem));
+            foreach (var message in messages)
+                notifications.Add(new Notification(message));
 
-            _notificador.Handle(notificacoes);
+            _notificator.Handle(notifications);
         }
 
-        protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
+        protected bool ExecuteValidation<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
         {
             var validator = validacao.Validate(entidade);
             if (validator.IsValid) return true;
-            Notificar(validator);
+            Notificate(validator);
             return false;
         }
     }

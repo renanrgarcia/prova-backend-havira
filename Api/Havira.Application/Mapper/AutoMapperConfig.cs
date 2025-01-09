@@ -1,6 +1,8 @@
 using AutoMapper;
-using Havira.Application.ViewModel.ContextoFeature;
-using Havira.Business.Models.ContextoFeature;
+using Havira.Application.ViewModel.ContextFeature;
+using Havira.Business.Models.ContextFeature;
+using NetTopologySuite.Geometries;
+using static Havira.Business.Models.ContextFeature.Feature;
 
 namespace Havira.Application.Mapper
 {
@@ -8,12 +10,19 @@ namespace Havira.Application.Mapper
     {
         public AutoMapperConfig()
         {
-            CreateMap<Feature, FeatureViewModel>()
-                .ForMember(x => x.Properties, map => map.MapFrom(prop => prop.Properties))
+            CreateMap<Feature, GetFeatureViewModel>()
+                .ForMember(dest => dest.Geometry, opt => opt.MapFrom(src => new GeoJsonPoint
+                {
+                    Type = "Point",
+                    Coordinates = new double[] { src.Geometry.X, src.Geometry.Y }
+                }))
                 .ReverseMap();
 
-            CreateMap<Properties, PropertiesViewModel>()
-                .ReverseMap();
+            CreateMap<CreateOrUpdateFeatureViewModel, Feature>()
+            .ForMember(dest => dest.Geometry, opt => opt.MapFrom(src =>
+                NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326)
+                .CreatePoint(new Coordinate(src.Longitude, src.Latitude))))
+            .ReverseMap();
         }
     }
 }

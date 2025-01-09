@@ -1,8 +1,74 @@
 # Prova Prática: Criação de API .NET (C#) com PostGIS, Docker e GeoJSON
 
+## Índice
+
+- [Instruções para execução](#instruções-para-execução)
+  - [Passo a passo](#passo-a-passo)
+- [Propostas para próximos passos](#propostas-para-próximos-passos)
+- [Estrutura da API](#estrutura-da-api)
+  - [Havira.API](#1-haviraapi)
+  - [Havira.Application](#2-haviraapplication)
+  - [Havira.Business](#3-havirabusiness)
+  - [Havira.Data](#4-haviradata)
+  - [Havira.Infra.Ioc](#5-havirainfraioc)
+- [Implementação da API](#implementação-da-api)
+  - [Criação dos Projetos da API](#1-criação-dos-projetos-da-api)
+  - [Configuração das referências](#2-configuração-das-referências)
+  - [Passo a passo](#3-passo-a-passo)
+    - [Havira.Business](#a-havirabusiness)
+    - [Havira.Data](#b-haviradata)
+    - [Havira.Application](#c-haviraapplication)
+    - [Havira.Infra.Ioc](#d-havirainfraioc)
+    - [HubConnect.API](#f-hubconnectapi)
+  - [Dockerização da API](#4-dockerização-da-api)
+- [Implementação do Banco de Dados](#implementação-do-banco-de-dados)
+  - [PostgreSQL e PostGIS](#1-postgresql-e-postgis)
+  - [Dockerização do Banco de Dados](#2-dockerização-do-banco-de-dados)
+- [Implementação do Docker compose](#implementação-do-docker-compose)
+
 ## Visão Geral
 
 Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operações de CRUD em um banco de dados PostgreSQL com extensão PostGIS. A API é construída utilizando o framework ASP.NET Core e o ORM Entity Framework Core. A API é disponibilizada em um container Docker e utiliza o formato GeoJSON para representar os dados geoespaciais.
+
+## Instruções para execução
+
+### Passo a passo
+
+1. **Clonar o repositório**:
+
+```bash
+git clone https://github.com/renandev/prova-backend-havira.git
+cd prova-backend-havira
+```
+
+2. **Subir os containers Docker**:
+
+- Certifique-se de que o Docker está instalado e em execução.
+- Execute o comando para subir os containers:
+
+```bash
+docker-compose up --build
+```
+
+4. **Acessar o Swagger**:
+
+- Após os containers estarem em execução, abra o navegador e acesse:
+  `http://localhost:8080/index.html`
+
+5. **Testar os endpoints**:
+
+- No Swagger, você verá a lista de endpoints disponíveis.
+- Expanda cada endpoint e clique em "Try it out" para testar as funcionalidades da API.
+
+Pronto! Agora você pode interagir com a API através do Swagger.
+
+## Propostas para próximos passos
+
+- **User Interface**: Implementar uma interface de usuário para interagir com a API.
+- **Testes Unitários e de Integração**: Implementar testes automatizados para garantir a qualidade do código.
+- **Expansão de Funcionalidades**: Adicionar novas operações e entidades para atender a requisitos futuros.
+- **Segurança**: Implementar autenticação e autorização para proteger a API e os dados.
+- **Paginação e Filtros**: Adicionar suporte a paginação e filtros para facilitar a consulta de dados.
 
 ## Estrutura da API
 
@@ -66,22 +132,22 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 
 #### a. **Havira.Business**
 
-- Criar a entidade base `Entity` e definir as constantes do SchemaDB `SchemaConsts`.
-- Definir as entidades principais `Feature` e `Properties` com suas propriedades e relacionamentos.
+- Criar a entidade base `Entity`.
+- Definir as entidades principais (`Feature`) com suas propriedades e relacionamentos.
 - Adicionar o pacote NuGet `NetTopologySuite` para trabalhar com dados geoespaciais.
-- Criar interfaces de repositório para cada entidade `IRepository`, como base, e `IFeatureRepository` e `IPropertiesRepository` para as entidades específicas.
+- Criar interfaces de repositório para cada entidade `IRepository`, como base, e `IFeatureRepository` para as entidades específicas.
 - Adicionar o pacote FluentValidation para validação de entidades. Criar as classes de validação para as entidades.
-- Criar a interface e implemente as classes de notificação do Sistema ("Event Source").
+- Criar a interface e implementar as classes de notificação do Sistema ("Event Source").
 
 #### b. **Havira.Data**
 
 - Configurar o DbContext para gerenciar as operações de banco de dados.
   - Adicionar o pacote NuGet `EntityFrameworkCore` como ORM.
   - Adicionar o pacote NuGet `EntityFrameworkCore.PostgreSQL` para trabalhar com o PostgreSQL.
-  - Criar a classe `MeuDbContext`: classe principal do EF Core que coordena sua funcionalidade para um modelo de dados.
+  - Criar a classe `MyDbContext`: classe principal do EF Core que coordena sua funcionalidade para um modelo de dados.
 - Implementar as interfaces de repositório utilizando o Entity Framework.
   - Criar o repositório base `Repository`, implementando `IRepository` (Que contem o contrato das operações de CRUD).
-  - Criar repositório para as entidades. Ele estende `Repository` e implementa a interface para a entidade (`ILocalizacaoRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
+  - Criar repositório para as entidades. Ele estende `Repository` e implementa a interface para a entidade (`IFeatureRepository`). Neles, as interfaces de repositório fornecem operações específicas para a entidade.
 
 #### c. **Havira.Application**
 
@@ -115,10 +181,10 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
 - A classe `ApiConfig` deve conter a coleção de serviços e de build.
 - Criar controladores para expor os serviços da camada de Application como endpoints REST.
   - Criar a classe `MainController` que herda de `ControllerBase`.
-  - Criar a classe `LocalizacaoController` que herda de `MainController`.
+  - Criar a classe `FeatureController` que herda de `MainController`.
   - Adicionar os pacotes `Microsoft.AspNetCore.Mvc.Versioning` e `Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer` ao projeto.
   - Adicionar os serviços de versionamento das APIs (AddApiVersioning e AddVersionedApiExplorer) no `ApiConfig.cs`.
-  - Insirir a anotação `ApiVersion` e `Route` na classe `LocalizacaoController`.
+  - Insirir a anotação `ApiVersion` e `Route` na classe `FeatureController`.
   - Adicionar o serviço `AddControllers` no `ApiConfig.cs`.
 - Adicionar o serviço `AddDbContext` no `ApiConfig.cs`.
 - Adicionar o pacote `NetTopologySuite.IO.GeoJSON4STJ` para trabalhar com GeoJSON.
@@ -134,16 +200,26 @@ Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operaçõ
   - **Publish Stage**: Publica a aplicação em modo Release.
   - **Final Stage**: Cria a imagem final a partir da imagem base e define o ponto de entrada da aplicação. Assim, a imagem final fica menor e mais eficiente.
 
-### 5. Propostas para próximos passos
-
-- **Testes Unitários e de Integração**: Implementar testes automatizados para garantir a qualidade do código.
-- **Expansão de Funcionalidades**: Adicionar novas operações e entidades para atender a requisitos futuros.
-- **Segurança**: Implementar autenticação e autorização para proteger a API.
-- **Paginação e Filtros**: Adicionar suporte a paginação e filtros para facilitar a consulta de dados.
-
 ## Implementação do Banco de Dados
 
 ### 1. PostgreSQL e PostGIS
 
 - Criar arquivo init.sql para criar o banco de dados e as tabelas, bem como adicionar extensão PostGIS.
+  - Adicionar as extensões `postgis` e `uuid-ossp`.
+  - Criar o schema `dbo` e a tabela `feature`
+  - Criar índices para as colunas `Geometry`, `Name`, e `Category`, para otimizar as consultas futuras.
+  - Inserir dados iniciais na tabela `feature`.
+
+### 2. Dockerização do Banco de Dados
+
 - Criar arquivo Dockerfile para configurar a imagem do PostgreSQL com PostGIS.
+- Instalar os pacotes necessários para o PostgreSQL e PostGIS.
+- Copiar o arquivo init.sql para a pasta de inicialização do PostgreSQL.
+
+## Implementação do Docker compose
+
+- Criar o arquivo `docker-compose.yml` para orquestrar a execução dos containers da API e do banco de dados.
+- Definir os serviços `api` e `database` com as configurações necessárias.
+  - **database**: Este serviço configura um container para o PostgreSQL, incluindo a criação de um volume persistente para os dados do banco de dados e a definição de variáveis de ambiente para o usuário, senha e nome do banco de dados.
+  - **api**: Este serviço configura um container para a API da aplicação. Ele depende do serviço `database` para garantir que o banco de dados esteja disponível antes de iniciar a API. As variáveis de ambiente são configuradas para permitir que a API se conecte ao banco de dados PostgreSQL.
+

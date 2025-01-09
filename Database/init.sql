@@ -3,41 +3,48 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE SCHEMA IF NOT EXISTS dbo;
 
-CREATE TABLE dbo.localizacao (
-    Id UUID DEFAULT uuid_generate_v4() PRIMARY KEY, 
-    Nome VARCHAR(255) NOT NULL,
-    Categoria VARCHAR(255) NOT NULL,
-    Coordenadas GEOMETRY(Point, 4326) NOT NULL
+CREATE TABLE dbo.feature (
+    "Id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY, 
+    "Name" VARCHAR(255) NOT NULL,
+    "Category" INT NOT NULL,
+    "Geometry" GEOMETRY(Point, 4326) NOT NULL,
+    "CreatedAt" TIMESTAMP NOT NULL,
+    "UpdatedAt" TIMESTAMP NULL
 );
 
-INSERT INTO dbo.localizacao (Nome, Categoria, Coordenadas)
+CREATE INDEX features_idx ON dbo.feature USING GIST ("Geometry");
+
+CREATE INDEX features_name_idx ON dbo.feature ("Name");
+CREATE INDEX features_category_idx ON dbo.feature ("Category");
+
+INSERT INTO dbo.feature ("Name", "Category", "Geometry", "CreatedAt", "UpdatedAt")
 VALUES
-    ('Casa A', 1, ST_MakePoint(-46.6333, -23.5504)), 
-    ('Hospital B', 3, ST_MakePoint(-46.6445, -23.5427)),
-    ('Escola C', 4, ST_MakePoint(-46.6528, -23.5380)),
-    ('Loja D', 2, ST_MakePoint(-46.6382, -23.5471)),
-    ('Parque E', 5, ST_MakePoint(-46.6250, -23.5612)),
-    ('Banco F', 2, ST_MakePoint(-46.6401, -23.5553)),
-    ('Supermercado G', 2, ST_MakePoint(-46.6318, -23.5498)),
-    ('Academia H', 2, ST_MakePoint(-46.6489, -23.5456)),
-    ('Biblioteca I', 4, ST_MakePoint(-46.6575, -23.5342)),
-    ('Posto de Gasolina J', 2, ST_MakePoint(-46.6359, -23.5520)),
-    ('Casa K', 1, ST_MakePoint(-46.6287, -23.5585)),
-    ('Hospital L', 3, ST_MakePoint(-46.6472, -23.5409)),
-    ('Escola M', 4, ST_MakePoint(-46.6551, -23.5363)),
-    ('Clinica N', 3, ST_MakePoint(-46.6398, -23.5484)),
-    ('Parque O', 5, ST_MakePoint(-46.6235, -23.5637)),
-    ('Banco P', 2, ST_MakePoint(-46.6419, -23.5576)),
-    ('Supermercado Q', 2, ST_MakePoint(-46.6301, -23.5513)),
-    ('Academia R', 2, ST_MakePoint(-46.6463, -23.5441)),
-    ('Biblioteca S', 4, ST_MakePoint(-46.6592, -23.5325)),
-    ('Posto de Gasolina T', 2, ST_MakePoint(-46.6346, -23.5535)),
-    ('Casa U', 1, ST_MakePoint(-46.6274, -23.5601)),
-    ('Hospital V', 3, ST_MakePoint(-46.6458, -23.5418)),
-    ('Escola W', 4, ST_MakePoint(-46.6539, -23.5371)),
-    ('Clinica X', 3, ST_MakePoint(-46.6407, -23.5497)),
-    ('Parque Y', 5, ST_MakePoint(-46.6221, -23.5652)),
-    ('Banco Z', 2, ST_MakePoint(-46.6430, -23.5590)),
-    ('Supermercado AA', 2, ST_MakePoint(-46.6293, -23.5528)),
-    ('Academia BB', 2, ST_MakePoint(-46.6449, -23.5434)),
-    ('Biblioteca CC', 4, ST_MakePoint(-46.6608, -23.5317));
+    ('Residencial Alpha', 1, ST_MakePoint(120.6333, 45.5504), CURRENT_TIMESTAMP, NULL),
+    ('Comercial Beta', 2, ST_MakePoint(-70.6445, 35.5427), CURRENT_TIMESTAMP, NULL),
+    ('Hospital Gamma', 3, ST_MakePoint(80.6528, -10.5380), CURRENT_TIMESTAMP, NULL),
+    ('Escola Delta', 4, ST_MakePoint(-100.6382, 50.5471), CURRENT_TIMESTAMP, NULL),
+    ('Parque Epsilon', 5, ST_MakePoint(60.6250, -20.5612), CURRENT_TIMESTAMP, NULL),
+    ('Comercial Zeta', 2, ST_MakePoint(-130.6401, 25.5553), CURRENT_TIMESTAMP, NULL),
+    ('Hospital Eta', 3, ST_MakePoint(90.6318, -30.5498), CURRENT_TIMESTAMP, NULL),
+    ('Escola Theta', 4, ST_MakePoint(-140.6489, 40.5456), CURRENT_TIMESTAMP, NULL),
+    ('Residencial Iota', 1, ST_MakePoint(110.6575, -15.5342), CURRENT_TIMESTAMP, NULL),
+    ('Comercial Kappa', 2, ST_MakePoint(-150.6359, 55.5520), CURRENT_TIMESTAMP, NULL),
+    ('Hospital Lambda', 3, ST_MakePoint(100.6287, -25.5585), CURRENT_TIMESTAMP, NULL),
+    ('Escola Mu', 4, ST_MakePoint(-160.6472, 60.5409), CURRENT_TIMESTAMP, NULL),
+    ('Parque Nu', 5, ST_MakePoint(70.6551, -35.5363), CURRENT_TIMESTAMP, NULL),
+    ('Residencial Xi', 1, ST_MakePoint(-170.6398, 65.5484), CURRENT_TIMESTAMP, NULL),
+    ('Comercial Omicron', 2, ST_MakePoint(80.6235, -40.5637), CURRENT_TIMESTAMP, NULL),
+    ('Hospital Pi', 3, ST_MakePoint(-180.6419, 70.5576), CURRENT_TIMESTAMP, NULL),
+    ('Escola Rho', 4, ST_MakePoint(90.6301, -45.5513), CURRENT_TIMESTAMP, NULL),
+    ('Parque Sigma', 5, ST_MakePoint(-160.6463, 75.5441), CURRENT_TIMESTAMP, NULL),
+    ('Residencial Tau', 1, ST_MakePoint(100.6592, -50.5325), CURRENT_TIMESTAMP, NULL),
+    ('Comercial Upsilon', 2, ST_MakePoint(-150.6346, 80.5535), CURRENT_TIMESTAMP, NULL),
+    ('Hospital Phi', 3, ST_MakePoint(110.6274, -55.5601), CURRENT_TIMESTAMP, NULL),
+    ('Escola Chi', 4, ST_MakePoint(-140.6458, 85.5418), CURRENT_TIMESTAMP, NULL),
+    ('Parque Psi', 5, ST_MakePoint(120.6539, -60.5371), CURRENT_TIMESTAMP, NULL),
+    ('Residencial Omega', 1, ST_MakePoint(-130.6407, 90.5497), CURRENT_TIMESTAMP, NULL),
+    ('Comercial Alpha2', 2, ST_MakePoint(130.6221, -65.5652), CURRENT_TIMESTAMP, NULL),
+    ('Hospital Beta2', 3, ST_MakePoint(-120.6430, 95.5590), CURRENT_TIMESTAMP, NULL),
+    ('Escola Gamma2', 4, ST_MakePoint(140.6293, -70.5528), CURRENT_TIMESTAMP, NULL),
+    ('Parque Delta2', 5, ST_MakePoint(-110.6449, 100.5434), CURRENT_TIMESTAMP, NULL),
+    ('Residencial Epsilon2', 1, ST_MakePoint(150.6608, -75.5317), CURRENT_TIMESTAMP, NULL);

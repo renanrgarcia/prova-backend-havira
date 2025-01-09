@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Havira.Business.Models
@@ -8,7 +7,7 @@ namespace Havira.Business.Models
         protected Entity()
         {
             Id = Guid.NewGuid();
-            CreatedAt = DateTime.UtcNow.AddHours(-3);
+            CreatedAt = DateTimeOffset.Now.DateTime;
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,9 +15,9 @@ namespace Havira.Business.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public void Atualizacao()
+        public void UpdateLog()
         {
-            UpdatedAt = DateTime.UtcNow.AddHours(-3);
+            UpdatedAt = DateTimeOffset.Now.DateTime;
         }
     }
 }
