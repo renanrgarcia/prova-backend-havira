@@ -1,0 +1,23 @@
+services:
+  database:
+    build: ./Database
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./Database/postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: havira_user
+      POSTGRES_PASSWORD: XT8#5£1zl$m!
+      POSTGRES_DB: feature_database
+
+  api:
+    build: ./Api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    environment:
+      "ConnectionStrings:DefaultConnection": "Host=database;Database=feature_database;Username=havira_user;Password=XT8#5£1zl$m!;Port=5432"
+
+volumes:
+  postgres_data:
