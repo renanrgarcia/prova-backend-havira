@@ -21,46 +21,44 @@ namespace Havira.API.V1.Controllers
         }
 
         [HttpGet("getAll")]
-        public async Task<ActionResult<IEnumerable<string>>> getAll()
+        public async Task<ActionResult<IEnumerable<GetFeatureViewModel>>> GetAll()
         {
-            var localizacoes = await _featureApplication.GetAll();
+            var features = await _featureApplication.GetAll();
 
-            if (!localizacoes.Any()) return CustomResponse();
+            if (!features.Any()) return CustomResponse();
 
-            Console.WriteLine("Localizações: " + localizacoes.ToArray());
-
-            return CustomResponse(localizacoes);
+            return CustomResponse(features);
         }
 
         [HttpGet("get/{id:guid}")]
-        public async Task<ActionResult<string>> GetById(Guid id)
+        public async Task<ActionResult<GetFeatureViewModel>> GetById(Guid id)
         {
 
             var feature = await _featureApplication.GetById(id);
 
             if (feature == null) return CustomResponse();
 
-            return feature.ToGeoJson();
+            return feature;
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateFeature([FromBody] FeatureViewModel featureViewModel)
+        public async Task<IActionResult> CreateFeature([FromBody] CreateFeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _featureApplication.CreateFeature(featureViewModel);
+            var result = await _featureApplication.CreateFeature(featureViewModel);
 
-            return CustomResponse(resultado.ToGeoJson());
+            return CustomResponse(result);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateFeature([FromBody] FeatureViewModel featureViewModel)
+        public async Task<IActionResult> UpdateFeature([FromBody] CreateFeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _featureApplication.Update(featureViewModel);
+            var result = await _featureApplication.Update(featureViewModel);
 
-            if (!resultado) return CustomResponse();
+            if (!result) return CustomResponse();
 
             return CustomResponse("Localização atualizada!");
         }
@@ -70,9 +68,9 @@ namespace Havira.API.V1.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _featureApplication.Remove(id);
+            var result = await _featureApplication.Remove(id);
 
-            if (!resultado) return CustomResponse();
+            if (!result) return CustomResponse();
 
             return CustomResponse("Localização removida!");
         }

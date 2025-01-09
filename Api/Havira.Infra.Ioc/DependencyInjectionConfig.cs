@@ -8,6 +8,8 @@ using Havira.Data.Repository.ContextFeature;
 using Havira.Business.Interfaces;
 using Havira.Business.Helpers.Notification;
 using Havira.Business.Helpers;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 
 namespace Havira.Infra.Ioc
 {

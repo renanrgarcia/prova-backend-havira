@@ -5,8 +5,6 @@ using Havira.Application.Interfaces.ContextFeature;
 using Havira.Application.ViewModel.ContextFeature;
 using Havira.Business.Models.ContextFeature;
 using Havira.Business.Models.ContextFeature.Validations;
-using Havira.Business.Models.ContextFeature.Enums;
-using Havira.Data.Repository.ContextFeature;
 using NetTopologySuite.Geometries;
 
 
@@ -26,68 +24,54 @@ namespace Havira.Application.App.ContextFeature
             _mapper = mapper;
         }
 
-        public async Task<FeatureViewModel> GetById(Guid id)
+        public async Task<GetFeatureViewModel> GetById(Guid id)
         {
             var feature = await _featureRepository.GetById(id);
 
             if (feature == null)
             {
-                Notificate("Localização não encontrada.");
+                Notificate("Location not found.");
                 return null;
             }
 
-            return _mapper.Map<FeatureViewModel>(feature);
+            return _mapper.Map<GetFeatureViewModel>(feature);
         }
 
-        public async Task<FeatureViewModel> GetFeatureByName(string name)
+        public async Task<GetFeatureViewModel> GetFeatureByName(string name)
         {
             var feature = await _featureRepository.GetFeatureByName(name);
 
             if (feature == null)
             {
-                Notificate("Localização não encontrada.");
+                Notificate("Location not found.");
                 return null;
             }
 
-            return _mapper.Map<FeatureViewModel>(feature);
+            return _mapper.Map<GetFeatureViewModel>(feature);
         }
 
-        public async Task<FeatureViewModel> CreateFeature(FeatureViewModel featureViewModel)
+        public async Task<CreateFeatureViewModel> CreateFeature(CreateFeatureViewModel viewModel)
         {
-            if (!ExecuteValidation(new FeatureValidation(), _mapper.Map<Feature>(featureViewModel))) return null;
+            if (!ExecuteValidation(new FeatureValidation(), _mapper.Map<Feature>(viewModel))) return null;
 
-            var nameFeatureExiste = await _featureRepository.GetFeatureByName(featureViewModel.Name);
+            var nameFeatureExiste = await _featureRepository.GetFeatureByName(viewModel.Name);
 
             if (nameFeatureExiste != null)
             {
-                Notificate("Já existe um localização com este name.");
+                Notificate("There is already a location with this name.");
                 return null;
             }
 
-            var geometryFactory = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
+            var gf = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
+            var point = gf.CreatePoint(new Coordinate(viewModel.Point.Coordinates[0], viewModel.Point.Coordinates[1]));
 
-            var geometry = geometryFactory.CreatePoint(new Coordinate(featureViewModel.Geometry.Coordinate.X, featureViewModel.Geometry.Coordinate.Y));
-
-            var feature = new Feature(featureViewModel.Type, geometry);
-
-            var properties = await _propertiesRepository.GetPropertiesPorName(featureViewModel.Properties.Name);
-
-            if (properties == null)
-            {
-                await _propertiesRepository.Create(new Properties(
-                                                        featureViewModel.Properties.Name,
-                                                        featureViewModel.Properties.Categoria
-                                                    ));
-                properties = await _propertiesRepository.GetPropertiesPorName(featureViewModel.Properties.Name);
-            }
-
-            feature.Properties = properties;
+            var feature = new Feature(viewModel.Name, viewModel.Category, point);
 
             await _featureRepository.Create(feature);
 
-            var featurePersistido = await _featureRepository.GetById(feature.Id);
+            var featurePersisted = await _featureRepository.GetById(feature.Id);
 
-            return _mapper.Map<FeatureViewModel>(featurePersistido);
+            return _mapper.Map<CreateFeatureViewModel>(featurePersisted);
         }
 
         public async Task<bool> RemoveFeature(Guid Id)
@@ -96,7 +80,7 @@ namespace Havira.Application.App.ContextFeature
 
             if (feature == null)
             {
-                Notificate("Localizacão não encontrada.");
+                Notificate("Location not found.");
                 return false;
             }
 
@@ -105,46 +89,34 @@ namespace Havira.Application.App.ContextFeature
             return true;
         }
 
-        public async Task<IEnumerable<FeatureViewModel>> GetAll()
-            => _mapper.Map<IEnumerable<FeatureViewModel>>(await _featureRepository.GetAll());
+        public async Task<IEnumerable<GetFeatureViewModel>> GetAll()
+            => _mapper.Map<IEnumerable<GetFeatureViewModel>>(await _featureRepository.GetAll());
 
-        public async Task Create(FeatureViewModel viewModel)
+        public async Task Create(CreateFeatureViewModel viewModel)
             => await _featureRepository.Create(_mapper.Map<Feature>(viewModel));
 
-        public async Task<bool> Update(FeatureViewModel viewModel)
+        public async Task<bool> Update(CreateFeatureViewModel viewModel)
         {
             var feature = _mapper.Map<Feature>(viewModel);
 
             if (!ExecuteValidation(new FeatureValidation(), feature)) return false;
 
-            var featureExistente = await _featureRepository.GetById(feature.Id);
+            var existantFeature = await _featureRepository.GetById(feature.Id);
 
-            if (featureExistente == null)
+            if (existantFeature == null)
             {
-                Notificate("Localização não encontrada.");
+                Notificate("Location not found.");
                 return false;
             }
 
-            var properties = await _propertiesRepository.GetPropertiesPorName(viewModel.Properties.Name);
+            var gf = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
+            var point = gf.CreatePoint(new Coordinate(viewModel.Point.Coordinates[0], viewModel.Point.Coordinates[1]));
 
-            if (properties == null)
-            {
-                await _propertiesRepository.Create(new Properties(
-                                                        viewModel.Properties.Name,
-                                                        viewModel.Properties.Categoria
-                                                    ));
-                properties = await _propertiesRepository.GetPropertiesPorName(viewModel.Properties.Name);
-            }
+            var newFeature = new Feature(viewModel.Name, viewModel.Category, point);
 
-            var featureAtualizada = new Feature(feature.Type, feature.Geometry)
-            {
-                Id = feature.Id,
-                Properties = properties
-            };
+            existantFeature.Editar(newFeature.Name, newFeature.Category, newFeature.Point);
 
-            featureExistente.Editar(featureAtualizada.Type, feature.Geometry, featureAtualizada.Properties);
-
-            await _featureRepository.Atualizar(featureExistente);
+            await _featureRepository.Update(existantFeature);
 
             return true;
         }
@@ -155,7 +127,7 @@ namespace Havira.Application.App.ContextFeature
 
             if (feature == null)
             {
-                Notificate("Localização não encontrada.");
+                Notificate("Location not found.");
                 return false;
             }
 

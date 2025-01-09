@@ -28,5 +28,11 @@ namespace Havira.Business.Models.ContextFeature
 
             Atualizacao();
         }
+
+        public class GeoJsonPoint
+        {
+            public string Type { get; set; }
+            public double[] Coordinates { get; set; }
+        }
     }
 }

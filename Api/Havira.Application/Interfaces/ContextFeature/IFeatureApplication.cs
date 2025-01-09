@@ -2,9 +2,14 @@ using Havira.Application.ViewModel.ContextFeature;
 
 namespace Havira.Application.Interfaces.ContextFeature
 {
-    public interface IFeatureApplication : IBaseApplication<FeatureViewModel>
+    public interface IFeatureApplication : IDisposable
     {
-        Task<FeatureViewModel> CreateFeature(FeatureViewModel featureViewModel);
-        Task<FeatureViewModel> GetFeatureByName(string name);
+        Task<IEnumerable<GetFeatureViewModel>> GetAll();
+        Task<GetFeatureViewModel> GetById(Guid Id);
+        Task Create(CreateFeatureViewModel viewModel);
+        Task<bool> Update(CreateFeatureViewModel viewModel);
+        Task<bool> Remove(Guid id);
+        Task<CreateFeatureViewModel> CreateFeature(CreateFeatureViewModel viewModel);
+        Task<GetFeatureViewModel> GetFeatureByName(string name);
     }
 }
