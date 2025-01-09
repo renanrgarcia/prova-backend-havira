@@ -10,25 +10,25 @@ namespace Havira.Application.App
     {
         private readonly INotificator _notificator;
 
-        protected BaseApplication(INotificator notificador)
+        protected BaseApplication(INotificator notificator)
         {
-            _notificator = notificador;
+            _notificator = notificator;
         }
 
-        protected void Notificar(ValidationResult validationResult)
+        protected void Notificate(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
             {
-                Notificar(error.ErrorMessage);
+                Notificate(error.ErrorMessage);
             }
         }
 
-        protected void Notificar(string message)
+        protected void Notificate(string message)
         {
             _notificator.Handle(new Notification(message));
         }
 
-        protected void Notificar(IEnumerable<string> messages)
+        protected void Notificate(IEnumerable<string> messages)
         {
             var notifications = new List<Notification>();
 
@@ -38,11 +38,11 @@ namespace Havira.Application.App
             _notificator.Handle(notifications);
         }
 
-        protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
+        protected bool ExecuteValidation<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
         {
             var validator = validacao.Validate(entidade);
             if (validator.IsValid) return true;
-            Notificar(validator);
+            Notificate(validator);
             return false;
         }
     }

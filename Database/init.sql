@@ -5,114 +5,46 @@ CREATE SCHEMA IF NOT EXISTS dbo;
 
 CREATE TABLE dbo.feature (
     "Id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY, 
-    "Type" VARCHAR(255) NOT NULL,
-    "Geometry" GEOMETRY(Point, 4326) NOT NULL,
+    "Name" VARCHAR(255) NOT NULL,
+    "Category" INT NOT NULL,
+    "Point" GEOMETRY(Point, 4326) NOT NULL,
     "CreatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     "UpdatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
-    "Status" BOOLEAN NOT NULL
 );
 
-CREATE TABLE dbo.properties (
-    "Id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    "FeatureId" UUID NOT NULL,
-    "Nome" VARCHAR(255) NOT NULL,
-    "Categoria" VARCHAR(255) NOT NULL,
-    "CreatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "UpdatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
-    CONSTRAINT fk_feature
-        FOREIGN KEY("FeatureId") 
-        REFERENCES dbo.feature("Id")
-);
+CREATE INDEX features_idx ON features USING GIST (Point);
 
-WITH inserted_features AS (
-    INSERT INTO dbo.feature ("Type", "Geometry", "Status", "CreatedAt", "UpdatedAt")
-    VALUES
-        ('Feature', ST_MakePoint(120.6333, 45.5504), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), 
-        ('Feature', ST_MakePoint(-70.6445, 35.5427), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(80.6528, -10.5380), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-100.6382, 50.5471), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(60.6250, -20.5612), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-130.6401, 25.5553), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(90.6318, -30.5498), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-140.6489, 40.5456), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(110.6575, -15.5342), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-150.6359, 55.5520), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(100.6287, -25.5585), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-160.6472, 60.5409), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(70.6551, -35.5363), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-170.6398, 65.5484), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(80.6235, -40.5637), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-180.6419, 70.5576), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(90.6301, -45.5513), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-160.6463, 75.5441), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(100.6592, -50.5325), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-150.6346, 80.5535), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(110.6274, -55.5601), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-140.6458, 85.5418), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(120.6539, -60.5371), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-130.6407, 90.5497), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(130.6221, -65.5652), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-120.6430, 95.5590), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(140.6293, -70.5528), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(-110.6449, 100.5434), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-        ('Feature', ST_MakePoint(150.6608, -75.5317), TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-    RETURNING "Id", "Geometry"
-)
-INSERT INTO dbo.properties ("FeatureId", "Nome", "Categoria", "CreatedAt", "UpdatedAt")
-SELECT "Id", 'Casa A', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(120.6333, 45.5504)
-UNION ALL
-SELECT "Id", 'Hospital B', '3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-70.6445, 35.5427)
-UNION ALL
-SELECT "Id", 'Escola C', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(80.6528, -10.5380)
-UNION ALL
-SELECT "Id", 'Loja D', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-100.6382, 50.5471)
-UNION ALL
-SELECT "Id", 'Parque E', '5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(60.6250, -20.5612)
-UNION ALL
-SELECT "Id", 'Banco F', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-130.6401, 25.5553)
-UNION ALL
-SELECT "Id", 'Supermercado G', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(90.6318, -30.5498)
-UNION ALL
-SELECT "Id", 'Academia H', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-140.6489, 40.5456)
-UNION ALL
-SELECT "Id", 'Biblioteca I', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(110.6575, -15.5342)
-UNION ALL
-SELECT "Id", 'Posto de Gasolina J', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-150.6359, 55.5520)
-UNION ALL
-SELECT "Id", 'Casa K', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(100.6287, -25.5585)
-UNION ALL
-SELECT "Id", 'Hospital L', '3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-160.6472, 60.5409)
-UNION ALL
-SELECT "Id", 'Escola M', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(70.6551, -35.5363)
-UNION ALL
-SELECT "Id", 'Clinica N', '3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-170.6398, 65.5484)
-UNION ALL
-SELECT "Id", 'Parque O', '5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(80.6235, -40.5637)
-UNION ALL
-SELECT "Id", 'Banco P', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-180.6419, 70.5576)
-UNION ALL
-SELECT "Id", 'Supermercado Q', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(90.6301, -45.5513)
-UNION ALL
-SELECT "Id", 'Academia R', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-160.6463, 75.5441)
-UNION ALL
-SELECT "Id", 'Biblioteca S', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(100.6592, -50.5325)
-UNION ALL
-SELECT "Id", 'Posto de Gasolina T', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-150.6346, 80.5535)
-UNION ALL
-SELECT "Id", 'Casa U', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(110.6274, -55.5601)
-UNION ALL
-SELECT "Id", 'Hospital V', '3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-140.6458, 85.5418)
-UNION ALL
-SELECT "Id", 'Escola W', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(120.6539, -60.5371)
-UNION ALL
-SELECT "Id", 'Clinica X', '3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-130.6407, 90.5497)
-UNION ALL
-SELECT "Id", 'Parque Y', '5', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(130.6221, -65.5652)
-UNION ALL
-SELECT "Id", 'Banco Z', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-120.6430, 95.5590)
-UNION ALL
-SELECT "Id", 'Supermercado AA', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(140.6293, -70.5528)
-UNION ALL
-SELECT "Id", 'Academia BB', '2', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(-110.6449, 100.5434)
-UNION ALL
-SELECT "Id", 'Biblioteca CC', '4', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP FROM inserted_features WHERE "Geometry" = ST_MakePoint(150.6608, -75.5317);
+CREATE INDEX features_name_idx ON features (Name);
+CREATE INDEX features_category_idx ON features (Category);
+
+INSERT INTO dbo.feature ("Name", "Category", "Point", "CreatedAt", "UpdatedAt")
+VALUES
+    ('Feature A', 1, ST_MakePoint(120.6333, 45.5504), CURRENT_TIMESTAMP, NULL),
+    ('Feature B', 3, ST_MakePoint(-70.6445, 35.5427), CURRENT_TIMESTAMP, NULL),
+    ('Feature C', 4, ST_MakePoint(80.6528, -10.5380), CURRENT_TIMESTAMP, NULL),
+    ('Feature D', 2, ST_MakePoint(-100.6382, 50.5471), CURRENT_TIMESTAMP, NULL),
+    ('Feature E', 5, ST_MakePoint(60.6250, -20.5612), CURRENT_TIMESTAMP, NULL),
+    ('Feature F', 2, ST_MakePoint(-130.6401, 25.5553), CURRENT_TIMESTAMP, NULL),
+    ('Feature G', 2, ST_MakePoint(90.6318, -30.5498), CURRENT_TIMESTAMP, NULL),
+    ('Feature H', 2, ST_MakePoint(-140.6489, 40.5456), CURRENT_TIMESTAMP, NULL),
+    ('Feature I', 4, ST_MakePoint(110.6575, -15.5342), CURRENT_TIMESTAMP, NULL),
+    ('Feature J', 2, ST_MakePoint(-150.6359, 55.5520), CURRENT_TIMESTAMP, NULL),
+    ('Feature K', 1, ST_MakePoint(100.6287, -25.5585), CURRENT_TIMESTAMP, NULL),
+    ('Feature L', 3, ST_MakePoint(-160.6472, 60.5409), CURRENT_TIMESTAMP, NULL),
+    ('Feature M', 4, ST_MakePoint(70.6551, -35.5363), CURRENT_TIMESTAMP, NULL),
+    ('Feature N', 3, ST_MakePoint(-170.6398, 65.5484), CURRENT_TIMESTAMP, NULL),
+    ('Feature O', 5, ST_MakePoint(80.6235, -40.5637), CURRENT_TIMESTAMP, NULL),
+    ('Feature P', 2, ST_MakePoint(-180.6419, 70.5576), CURRENT_TIMESTAMP, NULL),
+    ('Feature Q', 2, ST_MakePoint(90.6301, -45.5513), CURRENT_TIMESTAMP, NULL),
+    ('Feature R', 2, ST_MakePoint(-160.6463, 75.5441), CURRENT_TIMESTAMP, NULL),
+    ('Feature S', 4, ST_MakePoint(100.6592, -50.5325), CURRENT_TIMESTAMP, NULL),
+    ('Feature T', 2, ST_MakePoint(-150.6346, 80.5535), CURRENT_TIMESTAMP, NULL),
+    ('Feature U', 1, ST_MakePoint(110.6274, -55.5601), CURRENT_TIMESTAMP, NULL),
+    ('Feature V', 3, ST_MakePoint(-140.6458, 85.5418), CURRENT_TIMESTAMP, NULL),
+    ('Feature W', 4, ST_MakePoint(120.6539, -60.5371), CURRENT_TIMESTAMP, NULL),
+    ('Feature X', 3, ST_MakePoint(-130.6407, 90.5497), CURRENT_TIMESTAMP, NULL),
+    ('Feature Y', 5, ST_MakePoint(130.6221, -65.5652), CURRENT_TIMESTAMP, NULL),
+    ('Feature Z', 2, ST_MakePoint(-120.6430, 95.5590), CURRENT_TIMESTAMP, NULL),
+    ('Feature AA', 2, ST_MakePoint(140.6293, -70.5528), CURRENT_TIMESTAMP, NULL),
+    ('Feature BB', 2, ST_MakePoint(-110.6449, 100.5434), CURRENT_TIMESTAMP, NULL),
+    ('Feature CC', 4, ST_MakePoint(150.6608, -75.5317), CURRENT_TIMESTAMP, NULL);

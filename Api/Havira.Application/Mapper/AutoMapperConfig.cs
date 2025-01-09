@@ -9,10 +9,6 @@ namespace Havira.Application.Mapper
         public AutoMapperConfig()
         {
             CreateMap<Feature, FeatureViewModel>()
-                .ForMember(x => x.Properties, map => map.MapFrom(prop => prop.Properties))
-                .ReverseMap();
-
-            CreateMap<Properties, PropertiesViewModel>()
                 .ReverseMap();
         }
     }

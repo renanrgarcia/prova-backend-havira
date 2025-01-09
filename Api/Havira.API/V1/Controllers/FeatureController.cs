@@ -14,70 +14,63 @@ namespace Havira.API.V1.Controllers
         private readonly IFeatureApplication _featureApplication;
 
         public FeatureController(
-            INotificador notificador,
-            IFeatureApplication featureApplication) : base(notificador)
+            INotificator notificator,
+            IFeatureApplication featureApplication) : base(notificator)
         {
             _featureApplication = featureApplication;
         }
 
-        [HttpGet("obterTodos")]
-        public async Task<ActionResult<IEnumerable<string>>> ObterTodos()
+        [HttpGet("getAll")]
+        public async Task<ActionResult<IEnumerable<string>>> getAll()
         {
-            var localizacoes = await _featureApplication.ObterTodos();
+            var localizacoes = await _featureApplication.GetAll();
 
             if (!localizacoes.Any()) return CustomResponse();
 
             Console.WriteLine("Localizações: " + localizacoes.ToArray());
 
-            // foreach (var localizacao in localizacoes)
-            // {
-            //     localizacao.ToGeoJson();
-            // }
-
-            // Console.WriteLine("Localizações2: " + localizacoes);
-
             return CustomResponse(localizacoes);
         }
 
-        [HttpGet("obter/{id:guid}")]
-        public async Task<ActionResult<string>> ObterPorId(Guid id)
+        [HttpGet("get/{id:guid}")]
+        public async Task<ActionResult<string>> GetById(Guid id)
         {
 
-            var feature = await _featureApplication.ObterPorId(id);
+            var feature = await _featureApplication.GetById(id);
 
             if (feature == null) return CustomResponse();
 
             return feature.ToGeoJson();
         }
 
-        [HttpPost("adicionar")]
-        public async Task<IActionResult> AdicionarFeature([FromBody] FeatureViewModel featureViewModel)
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateFeature([FromBody] FeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _featureApplication.AdicionarFeature(featureViewModel);
+            var resultado = await _featureApplication.CreateFeature(featureViewModel);
 
             return CustomResponse(resultado.ToGeoJson());
         }
 
-        [HttpPut("atualizar")]
-        public async Task<IActionResult> AtualizarFeature([FromBody] FeatureViewModel featureViewModel)
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateFeature([FromBody] FeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _featureApplication.Atualizar(featureViewModel);
+            var resultado = await _featureApplication.Update(featureViewModel);
 
             if (!resultado) return CustomResponse();
 
             return CustomResponse("Localização atualizada!");
         }
 
-        [HttpDelete("remover/{id:guid}")]
-        public async Task<ActionResult> RemoverFeature(Guid id)
+        [HttpDelete("remove/{id:guid}")]
+        public async Task<ActionResult> RemoveFeature(Guid id)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var resultado = await _featureApplication.Remover(id);
+            var resultado = await _featureApplication.Remove(id);
 
             if (!resultado) return CustomResponse();
 

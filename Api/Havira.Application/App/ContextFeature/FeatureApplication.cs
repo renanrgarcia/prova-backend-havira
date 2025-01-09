@@ -16,54 +16,51 @@ namespace Havira.Application.App.ContextFeature
     {
 
         private readonly IFeatureRepository _featureRepository;
-        private readonly IPropertiesRepository _propertiesRepository;
         private readonly IMapper _mapper;
 
         public FeatureApplication(IFeatureRepository featureRepository,
-                                    IPropertiesRepository propertiesRepository,
                                     IMapper mapper,
-                                    INotificador notificador) : base(notificador)
+                                    INotificator notificator) : base(notificator)
         {
             _featureRepository = featureRepository;
-            _propertiesRepository = propertiesRepository;
             _mapper = mapper;
         }
 
-        public async Task<FeatureViewModel> ObterPorId(Guid id)
+        public async Task<FeatureViewModel> GetById(Guid id)
         {
-            var feature = await _featureRepository.ObterPorId(id);
+            var feature = await _featureRepository.GetById(id);
 
             if (feature == null)
             {
-                Notificar("Localização não encontrada.");
+                Notificate("Localização não encontrada.");
                 return null;
             }
 
             return _mapper.Map<FeatureViewModel>(feature);
         }
 
-        public async Task<FeatureViewModel> ObterFeaturePorNome(string nome)
+        public async Task<FeatureViewModel> GetFeatureByName(string name)
         {
-            var feature = await _featureRepository.ObterFeaturePorNome(nome);
+            var feature = await _featureRepository.GetFeatureByName(name);
 
             if (feature == null)
             {
-                Notificar("Localização não encontrada.");
+                Notificate("Localização não encontrada.");
                 return null;
             }
 
             return _mapper.Map<FeatureViewModel>(feature);
         }
 
-        public async Task<FeatureViewModel> AdicionarFeature(FeatureViewModel featureViewModel)
+        public async Task<FeatureViewModel> CreateFeature(FeatureViewModel featureViewModel)
         {
-            if (!ExecutarValidacao(new FeatureValidation(), _mapper.Map<Feature>(featureViewModel))) return null;
+            if (!ExecuteValidation(new FeatureValidation(), _mapper.Map<Feature>(featureViewModel))) return null;
 
-            var nomeFeatureExiste = await _featureRepository.ObterFeaturePorNome(featureViewModel.Properties.Nome);
+            var nameFeatureExiste = await _featureRepository.GetFeatureByName(featureViewModel.Name);
 
-            if (nomeFeatureExiste != null)
+            if (nameFeatureExiste != null)
             {
-                Notificar("Já existe um localização com este nome.");
+                Notificate("Já existe um localização com este name.");
                 return null;
             }
 
@@ -73,70 +70,70 @@ namespace Havira.Application.App.ContextFeature
 
             var feature = new Feature(featureViewModel.Type, geometry);
 
-            var properties = await _propertiesRepository.ObterPropertiesPorNome(featureViewModel.Properties.Nome);
+            var properties = await _propertiesRepository.GetPropertiesPorName(featureViewModel.Properties.Name);
 
             if (properties == null)
             {
-                await _propertiesRepository.Adicionar(new Properties(
-                                                        featureViewModel.Properties.Nome,
+                await _propertiesRepository.Create(new Properties(
+                                                        featureViewModel.Properties.Name,
                                                         featureViewModel.Properties.Categoria
                                                     ));
-                properties = await _propertiesRepository.ObterPropertiesPorNome(featureViewModel.Properties.Nome);
+                properties = await _propertiesRepository.GetPropertiesPorName(featureViewModel.Properties.Name);
             }
 
             feature.Properties = properties;
 
-            await _featureRepository.Adicionar(feature);
+            await _featureRepository.Create(feature);
 
-            var featurePersistido = await _featureRepository.ObterPorId(feature.Id);
+            var featurePersistido = await _featureRepository.GetById(feature.Id);
 
             return _mapper.Map<FeatureViewModel>(featurePersistido);
         }
 
-        public async Task<bool> RemoverFeature(Guid Id)
+        public async Task<bool> RemoveFeature(Guid Id)
         {
-            var feature = await _featureRepository.ObterPorId(Id);
+            var feature = await _featureRepository.GetById(Id);
 
             if (feature == null)
             {
-                Notificar("Localizacão não encontrada.");
+                Notificate("Localizacão não encontrada.");
                 return false;
             }
 
-            await _featureRepository.Remover(Id);
+            await _featureRepository.Remove(Id);
 
             return true;
         }
 
-        public async Task<IEnumerable<FeatureViewModel>> ObterTodos()
-            => _mapper.Map<IEnumerable<FeatureViewModel>>(await _featureRepository.ObterTodos());
+        public async Task<IEnumerable<FeatureViewModel>> GetAll()
+            => _mapper.Map<IEnumerable<FeatureViewModel>>(await _featureRepository.GetAll());
 
-        public async Task Adicionar(FeatureViewModel viewModel)
-            => await _featureRepository.Adicionar(_mapper.Map<Feature>(viewModel));
+        public async Task Create(FeatureViewModel viewModel)
+            => await _featureRepository.Create(_mapper.Map<Feature>(viewModel));
 
-        public async Task<bool> Atualizar(FeatureViewModel viewModel)
+        public async Task<bool> Update(FeatureViewModel viewModel)
         {
             var feature = _mapper.Map<Feature>(viewModel);
 
-            if (!ExecutarValidacao(new FeatureValidation(), feature)) return false;
+            if (!ExecuteValidation(new FeatureValidation(), feature)) return false;
 
-            var featureExistente = await _featureRepository.ObterPorId(feature.Id);
+            var featureExistente = await _featureRepository.GetById(feature.Id);
 
             if (featureExistente == null)
             {
-                Notificar("Localização não encontrada.");
+                Notificate("Localização não encontrada.");
                 return false;
             }
 
-            var properties = await _propertiesRepository.ObterPropertiesPorNome(viewModel.Properties.Nome);
+            var properties = await _propertiesRepository.GetPropertiesPorName(viewModel.Properties.Name);
 
             if (properties == null)
             {
-                await _propertiesRepository.Adicionar(new Properties(
-                                                        viewModel.Properties.Nome,
+                await _propertiesRepository.Create(new Properties(
+                                                        viewModel.Properties.Name,
                                                         viewModel.Properties.Categoria
                                                     ));
-                properties = await _propertiesRepository.ObterPropertiesPorNome(viewModel.Properties.Nome);
+                properties = await _propertiesRepository.GetPropertiesPorName(viewModel.Properties.Name);
             }
 
             var featureAtualizada = new Feature(feature.Type, feature.Geometry)
@@ -152,17 +149,17 @@ namespace Havira.Application.App.ContextFeature
             return true;
         }
 
-        public async Task<bool> Remover(Guid id)
+        public async Task<bool> Remove(Guid id)
         {
-            var feature = await _featureRepository.ObterPorId(id);
+            var feature = await _featureRepository.GetById(id);
 
             if (feature == null)
             {
-                Notificar("Localização não encontrada.");
+                Notificate("Localização não encontrada.");
                 return false;
             }
 
-            await _featureRepository.Remover(id);
+            await _featureRepository.Remove(id);
 
             return true;
         }
