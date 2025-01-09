@@ -14,7 +14,7 @@ namespace Havira.Application.Mapper
                 .ForMember(dest => dest.Point, opt => opt.MapFrom(src => new GeoJsonPoint
                 {
                     Type = "Point",
-                    Coordinates = new double[] { src.Point.X, src.Point.Y }
+                    Coordinates = new double[] { src.Geometry.X, src.Geometry.Y }
                 }))
                 .ReverseMap();
 
@@ -22,7 +22,7 @@ namespace Havira.Application.Mapper
                 .ForMember(dest => dest.Point, opt => opt.MapFrom(src => new GeoJsonPoint
                 {
                     Type = "Point",
-                    Coordinates = new double[] { src.Point.X, src.Point.Y }
+                    Coordinates = new double[] { src.Geometry.X, src.Geometry.Y }
                 }))
                 .ReverseMap();
         }

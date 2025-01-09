@@ -14,12 +14,12 @@ namespace Havira.Business.Models.ContextFeature.Validations
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório.")
                 .IsInEnum().WithMessage("O campo {PropertyName} deve ser um valor válido.");
 
-            RuleFor(x => x.Point.Coordinate.X)
+            RuleFor(x => x.Geometry.Coordinate.X)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório.")
                 .GreaterThanOrEqualTo(-180).WithMessage("O campo {PropertyName} deve ser maior ou igual a {ComparisonValue}.")
                 .LessThanOrEqualTo(180).WithMessage("O campo {PropertyName} deve ser menor ou igual a {ComparisonValue}.");
 
-            RuleFor(x => x.Point.Coordinate.Y)
+            RuleFor(x => x.Geometry.Coordinate.Y)
                 .NotEmpty().WithMessage("O campo {PropertyName} é obrigatório.")
                 .GreaterThanOrEqualTo(-90).WithMessage("O campo {PropertyName} deve ser maior ou igual a {ComparisonValue}.")
                 .LessThanOrEqualTo(90).WithMessage("O campo {PropertyName} deve ser menor ou igual a {ComparisonValue}.");

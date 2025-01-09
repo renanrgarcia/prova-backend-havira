@@ -7,17 +7,17 @@ CREATE TABLE dbo.feature (
     "Id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY, 
     "Name" VARCHAR(255) NOT NULL,
     "Category" INT NOT NULL,
-    "Point" GEOMETRY(Point, 4326) NOT NULL,
+    "Geometry" GEOMETRY(Point, 4326) NOT NULL,
     "CreatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    "UpdatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
+    "UpdatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX features_idx ON features USING GIST (Point);
+CREATE INDEX features_idx ON dbo.feature USING GIST ("Geometry");
 
-CREATE INDEX features_name_idx ON features (Name);
-CREATE INDEX features_category_idx ON features (Category);
+CREATE INDEX features_name_idx ON dbo.feature ("Name");
+CREATE INDEX features_category_idx ON dbo.feature ("Category");
 
-INSERT INTO dbo.feature ("Name", "Category", "Point", "CreatedAt", "UpdatedAt")
+INSERT INTO dbo.feature ("Name", "Category", "Geometry", "CreatedAt", "UpdatedAt")
 VALUES
     ('Feature A', 1, ST_MakePoint(120.6333, 45.5504), CURRENT_TIMESTAMP, NULL),
     ('Feature B', 3, ST_MakePoint(-70.6445, 35.5427), CURRENT_TIMESTAMP, NULL),

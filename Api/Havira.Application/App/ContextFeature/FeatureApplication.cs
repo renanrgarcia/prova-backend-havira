@@ -114,7 +114,7 @@ namespace Havira.Application.App.ContextFeature
 
             var newFeature = new Feature(viewModel.Name, viewModel.Category, point);
 
-            existantFeature.Editar(newFeature.Name, newFeature.Category, newFeature.Point);
+            existantFeature.Editar(newFeature.Name, newFeature.Category, newFeature.Geometry);
 
             await _featureRepository.Update(existantFeature);
 

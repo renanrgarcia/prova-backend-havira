@@ -60,7 +60,7 @@ namespace Havira.API.V1.Controllers
 
             if (!result) return CustomResponse();
 
-            return CustomResponse("Localização atualizada!");
+            return CustomResponse("Location updated!");
         }
 
         [HttpDelete("remove/{id:guid}")]
@@ -72,7 +72,7 @@ namespace Havira.API.V1.Controllers
 
             if (!result) return CustomResponse();
 
-            return CustomResponse("Localização removida!");
+            return CustomResponse("Location removed!");
         }
     }
 }

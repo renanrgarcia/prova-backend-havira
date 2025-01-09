@@ -9,22 +9,22 @@ namespace Havira.Business.Models.ContextFeature
     {
         public string Name { get; set; }
         public Category Category { get; set; }
-        public Point Point { get; set; }
+        public Point Geometry { get; set; }
 
-        public Feature(string name, Category category, Point point)
+        public Feature(string name, Category category, Point geometry)
         {
             Name = name;
             Category = category;
-            Point = point;
+            Geometry = geometry;
         }
 
         public Feature() { }
 
-        public void Editar(string name, Category category, Point point)
+        public void Editar(string name, Category category, Point geometry)
         {
             Name = name;
             Category = category;
-            Point = point;
+            Geometry = geometry;
 
             Atualizacao();
         }
