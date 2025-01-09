@@ -24,6 +24,7 @@
 - [Implementação do Banco de Dados](#implementação-do-banco-de-dados)
   - [PostgreSQL e PostGIS](#1-postgresql-e-postgis)
   - [Dockerização do Banco de Dados](#2-dockerização-do-banco-de-dados)
+- [Implementação do Docker compose](#implementação-do-docker-compose)
 
 ## Visão Geral
 
@@ -215,17 +216,10 @@ Pronto! Agora você pode interagir com a API através do Swagger.
 - Instalar os pacotes necessários para o PostgreSQL e PostGIS.
 - Copiar o arquivo init.sql para a pasta de inicialização do PostgreSQL.
 
-## Implementaçção do Docker compose
+## Implementação do Docker compose
 
 - Criar o arquivo `docker-compose.yml` para orquestrar a execução dos containers da API e do banco de dados.
 - Definir os serviços `api` e `database` com as configurações necessárias.
   - **database**: Este serviço configura um container para o PostgreSQL, incluindo a criação de um volume persistente para os dados do banco de dados e a definição de variáveis de ambiente para o usuário, senha e nome do banco de dados.
   - **api**: Este serviço configura um container para a API da aplicação. Ele depende do serviço `database` para garantir que o banco de dados esteja disponível antes de iniciar a API. As variáveis de ambiente são configuradas para permitir que a API se conecte ao banco de dados PostgreSQL.
-
-### Funcionalidades principais:
-
-- **Build e execução de containers**: O Docker Compose permite construir e executar os containers definidos no `docker-compose.yml` com um único comando.
-- **Gerenciamento de dependências**: Define a ordem de inicialização dos serviços, garantindo que o banco de dados esteja disponível antes da API.
-- **Persistência de dados**: Utiliza volumes para garantir que os dados do banco de dados sejam persistidos entre reinicializações dos containers.
-- **Configuração centralizada**: Todas as configurações necessárias para os serviços são definidas em um único arquivo, facilitando a manutenção e a replicação do ambiente.
 
