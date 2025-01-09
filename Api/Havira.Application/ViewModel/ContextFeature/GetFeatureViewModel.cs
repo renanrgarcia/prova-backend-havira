@@ -8,5 +8,5 @@ public class GetFeatureViewModel
     public Guid Id { get; set; }
     public string Name { get; set; }
     public Category Category { get; set; }
-    public GeoJsonPoint Point { get; set; }
+    public GeoJsonPoint Geometry { get; set; }
 }

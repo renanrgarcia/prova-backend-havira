@@ -33,7 +33,6 @@ namespace Havira.API.V1.Controllers
         [HttpGet("get/{id:guid}")]
         public async Task<ActionResult<GetFeatureViewModel>> GetById(Guid id)
         {
-
             var feature = await _featureApplication.GetById(id);
 
             if (feature == null) return CustomResponse();
@@ -42,7 +41,7 @@ namespace Havira.API.V1.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateFeature([FromBody] CreateFeatureViewModel featureViewModel)
+        public async Task<IActionResult> CreateFeature([FromBody] CreateOrUpdateFeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -51,10 +50,12 @@ namespace Havira.API.V1.Controllers
             return CustomResponse(result);
         }
 
-        [HttpPut("update")]
-        public async Task<IActionResult> UpdateFeature([FromBody] CreateFeatureViewModel featureViewModel)
+        [HttpPut("update/{id:guid}")]
+        public async Task<IActionResult> UpdateFeature(Guid id, [FromBody] CreateOrUpdateFeatureViewModel featureViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            featureViewModel.Id = id;
 
             var result = await _featureApplication.Update(featureViewModel);
 

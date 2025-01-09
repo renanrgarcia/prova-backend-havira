@@ -26,12 +26,12 @@ namespace Havira.Business.Models.ContextFeature
             Category = category;
             Geometry = geometry;
 
-            Atualizacao();
+            UpdateLog();
         }
 
         public class GeoJsonPoint
         {
-            public string Type { get; set; }
+            public string Type { get; set; } = "Point";
             public double[] Coordinates { get; set; }
         }
     }

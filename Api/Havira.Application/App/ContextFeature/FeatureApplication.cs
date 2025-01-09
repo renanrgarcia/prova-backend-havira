@@ -50,20 +50,20 @@ namespace Havira.Application.App.ContextFeature
             return _mapper.Map<GetFeatureViewModel>(feature);
         }
 
-        public async Task<CreateFeatureViewModel> CreateFeature(CreateFeatureViewModel viewModel)
+        public async Task<CreateOrUpdateFeatureViewModel> CreateFeature(CreateOrUpdateFeatureViewModel viewModel)
         {
             if (!ExecuteValidation(new FeatureValidation(), _mapper.Map<Feature>(viewModel))) return null;
 
-            var nameFeatureExiste = await _featureRepository.GetFeatureByName(viewModel.Name);
+            var nameFeatureExists = await _featureRepository.GetFeatureByName(viewModel.Name);
 
-            if (nameFeatureExiste != null)
+            if (nameFeatureExists != null)
             {
                 Notificate("There is already a location with this name.");
                 return null;
             }
 
             var gf = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
-            var point = gf.CreatePoint(new Coordinate(viewModel.Point.Coordinates[0], viewModel.Point.Coordinates[1]));
+            var point = gf.CreatePoint(new Coordinate(viewModel.Longitude, viewModel.Latitude));
 
             var feature = new Feature(viewModel.Name, viewModel.Category, point);
 
@@ -71,7 +71,7 @@ namespace Havira.Application.App.ContextFeature
 
             var featurePersisted = await _featureRepository.GetById(feature.Id);
 
-            return _mapper.Map<CreateFeatureViewModel>(featurePersisted);
+            return _mapper.Map<CreateOrUpdateFeatureViewModel>(featurePersisted);
         }
 
         public async Task<bool> RemoveFeature(Guid Id)
@@ -92,31 +92,34 @@ namespace Havira.Application.App.ContextFeature
         public async Task<IEnumerable<GetFeatureViewModel>> GetAll()
             => _mapper.Map<IEnumerable<GetFeatureViewModel>>(await _featureRepository.GetAll());
 
-        public async Task Create(CreateFeatureViewModel viewModel)
+        public async Task Create(CreateOrUpdateFeatureViewModel viewModel)
             => await _featureRepository.Create(_mapper.Map<Feature>(viewModel));
 
-        public async Task<bool> Update(CreateFeatureViewModel viewModel)
+        public async Task<bool> Update(CreateOrUpdateFeatureViewModel viewModel)
         {
-            var feature = _mapper.Map<Feature>(viewModel);
+            if (!ExecuteValidation(new FeatureValidation(), _mapper.Map<Feature>(viewModel))) return false;
 
-            if (!ExecuteValidation(new FeatureValidation(), feature)) return false;
-
-            var existantFeature = await _featureRepository.GetById(feature.Id);
-
-            if (existantFeature == null)
+            if (viewModel.Id.HasValue)
             {
-                Notificate("Location not found.");
-                return false;
+                var existantFeature = await _featureRepository.GetById(viewModel.Id.Value);
+
+                if (existantFeature == null)
+                {
+                    Notificate("Location not found.");
+                    return false;
+                }
+                else
+                {
+                    var gf = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
+                    var point = gf.CreatePoint(new Coordinate(viewModel.Longitude, viewModel.Latitude));
+
+                    var feature = new Feature(viewModel.Name, viewModel.Category, point);
+
+                    existantFeature.Editar(feature.Name, feature.Category, feature.Geometry);
+
+                    await _featureRepository.Update(existantFeature);
+                }
             }
-
-            var gf = NetTopologySuite.NtsGeometryServices.Instance.CreateGeometryFactory(4326);
-            var point = gf.CreatePoint(new Coordinate(viewModel.Point.Coordinates[0], viewModel.Point.Coordinates[1]));
-
-            var newFeature = new Feature(viewModel.Name, viewModel.Category, point);
-
-            existantFeature.Editar(newFeature.Name, newFeature.Category, newFeature.Geometry);
-
-            await _featureRepository.Update(existantFeature);
 
             return true;
         }

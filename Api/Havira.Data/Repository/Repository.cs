@@ -36,7 +36,7 @@ namespace Havira.Data.Repository
         public virtual async Task Update(TEntity entity)
         {
             DbSet.Update(entity);
-            entity.Atualizacao();
+            entity.UpdateLog();
             await SaveChanges();
         }
 

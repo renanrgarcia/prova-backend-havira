@@ -6,10 +6,10 @@ namespace Havira.Application.Interfaces.ContextFeature
     {
         Task<IEnumerable<GetFeatureViewModel>> GetAll();
         Task<GetFeatureViewModel> GetById(Guid Id);
-        Task Create(CreateFeatureViewModel viewModel);
-        Task<bool> Update(CreateFeatureViewModel viewModel);
+        Task Create(CreateOrUpdateFeatureViewModel viewModel);
+        Task<bool> Update(CreateOrUpdateFeatureViewModel viewModel);
         Task<bool> Remove(Guid id);
-        Task<CreateFeatureViewModel> CreateFeature(CreateFeatureViewModel viewModel);
+        Task<CreateOrUpdateFeatureViewModel> CreateFeature(CreateOrUpdateFeatureViewModel viewModel);
         Task<GetFeatureViewModel> GetFeatureByName(string name);
     }
 }
