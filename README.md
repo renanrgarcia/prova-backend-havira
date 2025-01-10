@@ -32,6 +32,8 @@
 
 Este projeto visa implementar uma API RESTful em .NET (C#) que realiza operações de CRUD em um banco de dados PostgreSQL com extensão PostGIS. A API é construída utilizando o framework ASP.NET Core e o ORM Entity Framework Core. A API é disponibilizada em um container Docker e utiliza o formato GeoJSON para representar os dados geoespaciais.
 
+O desenvolvimento da API e do banco de dados foram padronizadas na Língua Inglesa. Sendo possível posteriormente a tradução para as demais línguas necessárias para o projeto.
+
 ## Instruções para execução
 
 ### Passo a passo

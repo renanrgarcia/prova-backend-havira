@@ -2,10 +2,10 @@ namespace Havira.Business.Models.ContextFeature.Enums
 {
     public enum Category
     {
-        Residencial = 1,
-        Comercial = 2,
-        Saúde = 3,
-        Educacional = 4,
-        Outros = 5
+        Residential = 1,
+        Commercial = 2,
+        Health = 3,
+        Educational = 4,
+        Others = 5
     }
 }
