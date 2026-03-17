@@ -26,17 +26,17 @@ jobs:
 
       - name: Restore NuGet packages
         run: nuget restore
-        working-directory: prova-backend-havira/Api/Havira.API
+        working-directory: Api/Havira.API
 
       - name: Publish to folder
         run: msbuild /nologo /verbosity:m /t:Build /t:pipelinePreDeployCopyAllFilesToOneFolder /p:_PackageTempDir="\published\"
-        working-directory: prova-backend-havira/Api/Havira.API
+        working-directory: Api/Havira.API
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: ASP-app
-          path: '/published/**'
+          path: published/**
 
   deploy:
     runs-on: windows-latest
